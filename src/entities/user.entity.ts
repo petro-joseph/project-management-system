@@ -19,34 +19,34 @@ import {
   @Entity('users')
   export class User {
     @PrimaryGeneratedColumn('uuid')
-    id: string;
+    id!: string;
   
     @Column()
-    name: string;
+    name!: string;
   
     @Column({ unique: true })
-    email: string;
+    email!: string;
   
     @Column()
-    password: string;
+    password!: string;
   
     @Column({
       type: 'enum',
       enum: UserRole,
       default: UserRole.USER,
     })
-    role: UserRole;
+    role!: UserRole;
   
     // Relationships
     @OneToMany(() => Project, (project) => project.manager)
-    managedProjects: Project[];
+    managedProjects!: Project[];
   
     @OneToMany(() => Task, (task) => task.assignee)
-    assignedTasks: Task[];
+    assignedTasks!: Task[];
   
     @CreateDateColumn()
-    created_at: Date;
+    created_at!: Date;
   
     @UpdateDateColumn()
-    updated_at: Date;
+    updated_at!: Date;
   }

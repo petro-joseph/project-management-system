@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, RequestHandler } from 'express';
 import { TaskController } from '../controllers/task.controller';
 import { authenticate, authorize } from '../middleware/auth.middleware';
 import { UserRole } from '../entities/user.entity';
@@ -13,27 +13,27 @@ router.use(authenticate);
 router.post(
   '/',
   authorize([UserRole.ADMIN, UserRole.MANAGER]),
-  taskController.createTask
+  taskController.createTask as RequestHandler
 );
 
-router.get('/', taskController.getProjectTasks);
+router.get('/', taskController.getProjectTasks as RequestHandler);
 
 router.put(
   '/:id',
   authorize([UserRole.ADMIN, UserRole.MANAGER, UserRole.USER]),
-  taskController.updateTask
+  taskController.updateTask as RequestHandler
 );
 
 router.patch(
   '/:id/status',
   authorize([UserRole.ADMIN, UserRole.MANAGER, UserRole.USER]),
-  taskController.updateTaskStatus
+  taskController.updateTaskStatus as RequestHandler
 );
 
 router.delete(
   '/:id',
   authorize([UserRole.ADMIN, UserRole.MANAGER]),
-  taskController.deleteTask
+  taskController.deleteTask as RequestHandler
 );
 
 export default router;

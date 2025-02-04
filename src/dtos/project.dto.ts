@@ -1,20 +1,33 @@
 // src/dtos/project.dto.ts
-import { IsString, IsDateString, IsUUID, MinLength } from 'class-validator';
+import { IsString, IsNotEmpty, IsDateString } from 'class-validator';
 
 export class CreateProjectDto {
   @IsString()
-  @MinLength(3)
-  name: string;
+  @IsNotEmpty()
+  name!: string;
 
   @IsString()
-  @MinLength(10)
-  description: string;
+  @IsNotEmpty()
+  description!: string;
 
   @IsDateString()
-  start_date: Date;
+  start_date!: Date;
 
   @IsDateString()
-  end_date: Date;
+  end_date!: Date;
 }
 
-export class UpdateProjectDto extends CreateProjectDto {}
+export class UpdateProjectDto {
+  @IsString()
+  @IsNotEmpty()
+  name?: string;
+
+  @IsString()
+  description?: string;
+
+  @IsDateString()
+  start_date?: Date;
+
+  @IsDateString()
+  end_date?: Date;
+}

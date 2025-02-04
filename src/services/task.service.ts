@@ -4,14 +4,18 @@ import { Project } from '../entities/project.entity';
 import { User } from '../entities/user.entity';
 import { CreateTaskDto, UpdateTaskDto } from '../dtos/task.dto';
 import { AppError } from '../middleware/error.middleware';
+import { NotificationService } from './notification.service';
 
 export class TaskService {
   private taskRepository = AppDataSource.getRepository(Task);
   private projectRepository = AppDataSource.getRepository(Project);
   private userRepository = AppDataSource.getRepository(User);
+  private notificationService = new NotificationService();
 
-  /**
-   * Create a new task within a project
+
+
+   /**
+   * Create a new task  
    */
   async createTask(
     projectId: string,
@@ -48,8 +52,16 @@ export class TaskService {
       status: TaskStatus.PENDING,
     });
 
-    return await this.taskRepository.save(task);
+    const savedTask = await this.taskRepository.save(task);
+    
+    // Send notification to assignee
+    if (assignee) {
+      await this.notificationService.sendTaskAssignmentNotification(savedTask, assignee);
+    }
+
+    return savedTask;
   }
+
 
   /**
    * Get all tasks for a project
@@ -115,7 +127,7 @@ export class TaskService {
   }
 
   /**
-   * Update task status
+   * Update task status with notification
    */
   async updateTaskStatus(
     taskId: string,
@@ -129,10 +141,19 @@ export class TaskService {
       throw new AppError('Only task assignee can update status', 403);
     }
 
+    const previousStatus = task.status;
     this.validateStatusTransition(task.status, status);
     task.status = status;
 
-    return await this.taskRepository.save(task);
+    const updatedTask = await this.taskRepository.save(task);
+    
+    // Send notification for status update
+    await this.notificationService.sendTaskStatusUpdateNotification(
+      updatedTask,
+      previousStatus
+    );
+
+    return updatedTask;
   }
 
   /**

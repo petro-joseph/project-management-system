@@ -1,27 +1,25 @@
 // src/dtos/task.dto.ts
-import { IsString, IsEnum, IsUUID, MinLength } from 'class-validator';
+import { IsString, IsNotEmpty, IsUUID, IsEnum } from 'class-validator';
 import { TaskStatus } from '../entities/task.entity';
 
 export class CreateTaskDto {
   @IsString()
-  @MinLength(3)
-  name: string;
+  @IsNotEmpty()
+  name!: string;
 
   @IsString()
-  @MinLength(10)
-  description: string;
+  @IsNotEmpty()
+  description!: string;
 
   @IsUUID()
-  assigneeId: string;
+  assigneeId!: string;
 }
 
 export class UpdateTaskDto {
   @IsString()
-  @MinLength(3)
   name?: string;
 
   @IsString()
-  @MinLength(10)
   description?: string;
 
   @IsUUID()

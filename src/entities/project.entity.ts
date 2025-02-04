@@ -14,34 +14,34 @@ import {
   @Entity('projects')
   export class Project {
     @PrimaryGeneratedColumn('uuid')
-    id: string;
+    id!: string;
   
     @Column()
-    name: string;
+    name!: string;
   
     @Column('text')
-    description: string;
+    description!: string;
   
     @Column({ name: 'manager_id' })
-    managerId: string;
+    managerId!: string;
   
     @Column()
-    start_date: Date;
+    start_date!: Date;
   
     @Column()
-    end_date: Date;
+    end_date!: Date;
   
     // Relationships
     @ManyToOne(() => User, (user) => user.managedProjects)
     @JoinColumn({ name: 'manager_id' })
-    manager: User;
+    manager!: User;
   
     @OneToMany(() => Task, (task) => task.project)
-    tasks: Task[];
+    tasks!: Task[];
   
     @CreateDateColumn()
-    created_at: Date;
+    created_at!: Date;
   
     @UpdateDateColumn()
-    updated_at: Date;
+    updated_at!: Date;
   }

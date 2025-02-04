@@ -5,6 +5,7 @@ import { AppDataSource } from '../src/config/data-source';
 import { errorHandler } from '../src/middleware/error.middleware';
 import authRoutes from './routes/auth.routes';
 import projectRoutes from './routes/project.routes';
+import dashboardRoutes from './routes/dashboard.routes';
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 // Routes will be added here
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 // Error handling middleware should be last
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {

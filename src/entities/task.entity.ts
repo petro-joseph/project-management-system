@@ -19,39 +19,39 @@ import {
   @Entity('tasks')
   export class Task {
     @PrimaryGeneratedColumn('uuid')
-    id: string;
+    id!: string;
   
     @Column()
-    name: string;
+    name!: string;
   
     @Column('text')
-    description: string;
+    description!: string;
   
     @Column({ name: 'project_id' })
-    projectId: string;
+    projectId!: string;
   
     @Column({ name: 'assignee_id' })
-    assigneeId: string;
+    assigneeId!: string;
   
     @Column({
       type: 'enum',
       enum: TaskStatus,
       default: TaskStatus.PENDING,
     })
-    status: TaskStatus;
+    status!: TaskStatus;
   
     // Relationships
     @ManyToOne(() => Project, (project) => project.tasks)
     @JoinColumn({ name: 'project_id' })
-    project: Project;
+    project!: Project;
   
     @ManyToOne(() => User, (user) => user.assignedTasks)
     @JoinColumn({ name: 'assignee_id' })
-    assignee: User;
+    assignee!: User;
   
     @CreateDateColumn()
-    created_at: Date;
+    created_at!: Date;
   
     @UpdateDateColumn()
-    updated_at: Date;
+    updated_at!: Date;
   }
