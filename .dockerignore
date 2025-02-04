@@ -1,0 +1,10 @@
+node_modules
+npm-debug.log
+dist
+build
+coverage
+.env
+.env.test
+.git
+.gitignore
+README.md
