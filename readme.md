@@ -1,6 +1,3 @@
-Sure! Here’s a well-structured `README.md` with markdown formatting and emojis to make it more engaging:  
-
----
 
 # 🚀 Project Management System API  
 
