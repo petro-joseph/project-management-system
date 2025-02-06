@@ -4,7 +4,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     environment:
@@ -17,13 +17,13 @@ services:
       - JWT_SECRET=your-secret-key
       - SMTP_HOST=mailhog
       - SMTP_PORT=1025
+      - SMTP_FROM=noreply@projectmanagement.com
+    depends_on:
+      - postgres
+      - mailhog
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-    depends_on:
-      - postgres
-      - redis
-      - mailhog
 
   postgres:
     image: postgres:13-alpine
@@ -32,22 +32,9 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=project_management
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
-  redis:
-    image: redis:alpine
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-
-  mailhog:
-    image: mailhog/mailhog
-    ports:
-      - "1025:1025"
-      - "8025:8025"
 
   pgadmin:
     image: dpage/pgadmin4
@@ -59,6 +46,11 @@ services:
     depends_on:
       - postgres
 
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
 volumes:
   postgres_data:
-  redis_data:

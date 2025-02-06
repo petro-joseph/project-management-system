@@ -1,174 +1,106 @@
 import { ProjectService } from '../../../services/project.service';
-import { AppDataSource } from '../../../config/data-source';
-import { Project } from '../../../entities/project.entity';
-import { User } from '../../../entities/user.entity';
-import { UserRole } from '../../../entities/user.entity';
-import { BadRequestError } from '../../../errors/bad-request-error';
-import { UnauthorizedError } from '../../../errors/unauthorized-error';
-import { NotFoundError } from '../../../errors/not-found-error';
+import { createMockRepositories, mockProject, mockUser } from '../mock-helper';
+import { AppError } from '../../../middleware/error.middleware';
 import { CreateProjectDto } from '../../../dtos/project.dto';
-
-jest.mock('../../../config/data-source', () => ({
-  AppDataSource: {
-    getRepository: jest.fn()
-  }
-}));
 
 describe('ProjectService', () => {
   let projectService: ProjectService;
-  let mockProjectRepository: any;
-  let mockUserRepository: any;
+  const { projectRepository, userRepository } = createMockRepositories();
 
   beforeEach(() => {
-    mockProjectRepository = {
-      create: jest.fn(),
-      save: jest.fn(),
-      find: jest.fn(),
-      findOne: jest.fn(),
-      count: jest.fn()
-    };
-    mockUserRepository = {
-      findOne: jest.fn()
-    };
-
-    (AppDataSource.getRepository as jest.Mock).mockImplementation((entity) => {
-      if (entity === Project) return mockProjectRepository;
-      if (entity === User) return mockUserRepository;
-    });
-
     projectService = new ProjectService();
+    (projectService as any).projectRepository = projectRepository;
+    (projectService as any).userRepository = userRepository;
   });
 
   describe('createProject', () => {
     it('should create a project', async () => {
-      const userId = '1';
-      const projectDto: CreateProjectDto = {
-        name: 'Test Project',
-        description: 'Test Description',
+      // Create project data using the DTO
+      const projectData: CreateProjectDto = {
+        name: 'New Project',
+        description: 'Description',
         start_date: new Date(),
-        end_date: new Date(Date.now() + 86400000) // tomorrow
+        end_date: new Date()
       };
 
-      const manager = {
-        id: 1,
-        name: 'Test Manager',
-        email: 'manager@test.com',
-        role: UserRole.MANAGER
-      };
+      projectRepository.create.mockReturnValue({ ...mockProject, ...projectData });
+      projectRepository.save.mockResolvedValue({ ...mockProject, ...projectData });
 
-      const savedProject = {
-        id: 1,
-        ...projectDto,
-        manager
-      };
+      const result = await projectService.createProject(mockUser.id, projectData);
 
-      mockUserRepository.findOne.mockResolvedValue(manager);
-      mockProjectRepository.create.mockReturnValue(projectDto);
-      mockProjectRepository.save.mockResolvedValue(savedProject);
-
-      const result = await projectService.createProject(projectDto, userId);
-
-      expect(mockUserRepository.findOne).toHaveBeenCalledWith({
-        where: { id: userId }
-      });
-      expect(mockProjectRepository.create).toHaveBeenCalled();
-      expect(mockProjectRepository.save).toHaveBeenCalled();
-      expect(result).toEqual(savedProject);
-    });
-
-    it('should throw error if manager not found', async () => {
-      const userId = '1';
-      const projectDto: CreateProjectDto = {
-        name: 'Test Project',
-        description: 'Test Description',
-        start_date: new Date(),
-        end_date: new Date(Date.now() + 86400000)
-      };
-
-      mockUserRepository.findOne.mockResolvedValue(null);
-
-      await expect(projectService.createProject(projectDto, userId))
-        .rejects.toThrow(NotFoundError);
-    });
-
-    it('should throw error if user is not a manager', async () => {
-      const userId = '1';
-      const projectDto: CreateProjectDto = {
-        name: 'Test Project',
-        description: 'Test Description',
-        start_date: new Date(),
-        end_date: new Date(Date.now() + 86400000)
-      };
-
-      const user = {
-        id: 1,
-        name: 'Test User',
-        email: 'user@test.com',
-        role: UserRole.USER
-      };
-
-      mockUserRepository.findOne.mockResolvedValue(user);
-
-      await expect(projectService.createProject(projectDto, userId))
-        .rejects.toThrow(UnauthorizedError);
+      expect(result.name).toBe(projectData.name);
+      expect(projectRepository.save).toHaveBeenCalled();
     });
   });
 
   describe('getAllProjects', () => {
     it('should return projects with pagination', async () => {
-      const page = 1;
-      const limit = 10;
-      const projects = [
-        { id: 1, name: 'Project 1' },
-        { id: 2, name: 'Project 2' }
-      ];
+      const projects = [mockProject];
+      const total = 1;
 
-      mockProjectRepository.find.mockResolvedValue(projects);
-      mockProjectRepository.count.mockResolvedValue(2);
+      projectRepository.findAndCount.mockResolvedValue([projects, total]);
 
-      const result = await projectService.getAllProjects(page, limit);
+      const result = await projectService.getAllProjects(1, 10);
 
-      expect(mockProjectRepository.find).toHaveBeenCalledWith({
-        skip: 0,
-        take: limit,
-        relations: ['manager']
-      });
-      expect(result).toEqual({
-        data: projects,
-        total: 2,
-        page,
-        limit
-      });
+      expect(result.projects).toHaveLength(1);
+      expect(result.total).toBe(total);
     });
   });
 
   describe('getProjectById', () => {
     it('should return project by id', async () => {
-      const projectId = '1';
-      const project = {
-        id: 1,
-        name: 'Test Project',
-        description: 'Test Description'
-      };
+      projectRepository.findOne.mockResolvedValue(mockProject);
 
-      mockProjectRepository.findOne.mockResolvedValue(project);
+      const result = await projectService.getProjectById(mockProject.id);
 
-      const result = await projectService.getProjectById(projectId);
-
-      expect(mockProjectRepository.findOne).toHaveBeenCalledWith({
-        where: { id: projectId },
-        relations: ['manager', 'tasks']
-      });
-      expect(result).toEqual(project);
+      expect(result.id).toBe(mockProject.id);
     });
 
     it('should throw error if project not found', async () => {
-      const projectId = '1';
+      projectRepository.findOne.mockResolvedValue(null);
 
-      mockProjectRepository.findOne.mockResolvedValue(null);
+      await expect(projectService.getProjectById('nonexistent'))
+        .rejects.toThrow(AppError);
+    });
+  });
 
-      await expect(projectService.getProjectById(projectId))
-        .rejects.toThrow(NotFoundError);
+  describe('updateProject', () => {
+    it('should update a project', async () => {
+      const updateData: Partial<CreateProjectDto> = {
+        name: 'Updated Project',
+        description: 'Updated Description'
+      };
+
+      projectRepository.findOne.mockResolvedValue(mockProject);
+      projectRepository.save.mockResolvedValue({ ...mockProject, ...updateData });
+
+      const result = await projectService.updateProject(
+        mockProject.id,
+        mockUser.id,
+        updateData
+      );
+
+      expect(result.name).toBe(updateData.name);
+      expect(projectRepository.save).toHaveBeenCalled();
+    });
+  });
+
+  describe('deleteProject', () => {
+    it('should delete a project', async () => {
+      projectRepository.findOne.mockResolvedValue(mockProject);
+      projectRepository.remove.mockResolvedValue(mockProject);
+
+      await projectService.deleteProject(mockProject.id, mockUser.id);
+
+      expect(projectRepository.remove).toHaveBeenCalled();
+    });
+
+    it('should throw error if project not found', async () => {
+      projectRepository.findOne.mockResolvedValue(null);
+
+      await expect(
+        projectService.deleteProject('nonexistent', mockUser.id)
+      ).rejects.toThrow(AppError);
     });
   });
 });

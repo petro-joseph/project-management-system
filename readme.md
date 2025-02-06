@@ -1,226 +1,246 @@
+```markdown
+#  Project Management System API
 
-# Project Management System API  
+A  **RESTful API** for project management, built with **Node.js, Express, TypeScript, and TypeORM**.
 
-A **RESTful API** for project management, built with **Node.js**, **Express**, **TypeScript**, and **TypeORM**.  
+## 📖 Overview
 
-## ✨ Features  
+This API provides the following project management functionalities:
 
-- 🔐 **JWT Authentication & Role-Based Access Control**  
-- 📊 **Project & Task Management**  
-- 🔍 **Search Functionality**  
-- 📧 **Email Notifications**  
-- 📝 **Comprehensive API Documentation**  
-- 🗄️ **PostgreSQL Database**  
-- 💾 **Redis Caching**  
-- 🐳 **Docker Containerization**  
-- ✅ **Automated Testing**  
+- ✅ **User Authentication & Role-Based Access Control**
+- 📂 **Project & Task Management**
+- 🔍 **Search Functionality**
+- 📧 **Email Notifications**
+- 🧪 **Automated Testing**
+- 📑 **API Documentation (Swagger & Postman)**
 
-## 🛠 Tech Stack  
+## 🛠 Tech Stack
 
-- **Backend:** Node.js, Express.js, TypeScript  
-- **Database:** PostgreSQL, TypeORM  
-- **Caching:** Redis  
-- **Containerization:** Docker & Docker Compose  
-- **Testing:** Jest, Supertest  
-- **Documentation:** Postman Collection & Swagger 
+- **Backend:** Node.js, Express.js, TypeScript
+- **Database:** PostgreSQL, TypeORM
+- **Caching:** Redis
+- **Testing:** Jest, Supertest
+- **Documentation:** Swagger & Postman Collection
+- **Containerization:** Docker & Docker Compose
 
----
+## ⚙️ Prerequisites
 
-## ⚡ Prerequisites  
+Ensure you have the following installed:
 
-Ensure you have the following installed:  
-
-- **Node.js** (v16+)  
-- **Docker & Docker Compose**  
-- **PostgreSQL**  
-- **Redis**  
+- **Node.js** (v16+)
+- **PostgreSQL**
+- **Redis**
+- **Docker** (optional)
 
 ---
 
-## 🚀 Quick Start  
+## 🚀 Setup Instructions
 
-### 1️⃣ Clone the repository  
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/petro-joseph/project-management-system.git
+   cd project-management-system
+   ```
 
-```bash
-git clone https://github.com/yourusername/project-management-api.git
-cd project-management-api
-```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-## 📂 Project Structure  
+3. **Set up environment variables:**
+   ```bash
+   cp .env.example .env
+   ```
+
+4. **Create database:**
+   ```bash
+   psql -U postgres
+   CREATE DATABASE project_management;
+   ```
+
+5. **Run migrations:**
+   ```bash
+   npm run migration:run
+   ```
+
+6. **Start the server:**
+   ```bash
+   # Development
+   npm run dev
+
+   # Production
+   npm run build
+   npm start
+   ```
+
+---
+
+## 📂 Project Structure
 
 ```bash
 src/
-├── config/         # Configuration files
-├── controllers/    # Route controllers
-├── dtos/           # Data transfer objects 
-├── entities/       # TypeORM entities
-├── middleware/     # Custom middleware
-├── migrations/     # Database migrations
-├── routes/         # API routes
-├── services/       # Business logic
-└── test/           # Test files
-├── utils/          # Utility functions
+├── config/        # Configuration files
+├── controllers/   # Route controllers
+├── dto/           # data Transfer Object
+├── entities/      # TypeORM entities
+├── middleware/    # Custom middleware
+├── migrations/    # Database migrations
+├── routes/        # API routes
+├── services/      # Business logic
+├── test/          # Test files
+└── utils/         # Utility functions
 ```
-
-
-### 2️⃣ Install dependencies  
-
-```bash
-npm install
-```
-
-### 3️⃣ Set up environment variables  
-
-```bash
-cp .env.example .env
-```
-
-### Generate migrations  
-
-```bash
-npm run migration:generate
-```
-
-### Run migrations  
-
-```bash
-npm run migration:run
-```
-
-### Start the development server  
-
-```bash
-npm run dev
-```
-## 🐳 Docker Support  
-
-### Build and run with Docker  
-
-```bash
-# Development
-docker-compose up
-
-# Production
-docker-compose -f docker-compose.prod.yml up
-
-# Testing
-docker-compose -f docker-compose.test.yml up
-```
-
-The API will be available at **[http://localhost:3000](http://localhost:3000)** 🚀  
 
 ---
 
----
+## ✅ Testing
 
-## 📖 API Documentation  
-
-Swagger documentation is available at:  
-📌 **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)**  
-
----
-
----
-
-## 📡 API Endpoints  
-
-### 🔐 Authentication  
-
-- `POST /api/auth/register` - Register new user  
-- `POST /api/auth/login` - Login user  
-- `POST /api/auth/logout` - Logout user  
-
-### 📁 Projects  
-
-- `GET /api/projects` - Get all projects  
-- `POST /api/projects` - Create project  
-- `GET /api/projects/:id` - Get project by ID  
-- `PUT /api/projects/:id` - Update project  
-- `DELETE /api/projects/:id` - Delete project  
-
-### ✅ Tasks  
-
-- `GET /api/projects/:id/tasks` - Get project tasks  
-- `POST /api/projects/:id/tasks` - Create task  
-- `PUT /api/tasks/:id` - Update task  
-- `PATCH /api/tasks/:id/status` - Update task status  
-- `DELETE /api/tasks/:id` - Delete task  
-
-### 🔍 Search  
-
-- `GET /api/search/tasks` - Search tasks  
-- `GET /api/search/projects` - Search projects  
-- `GET /api/search/users` - Search users (Admin only)  
-
----
-
-
----
-
-## 🧪 Testing  
-
-Run different types of tests:  
+### Running Tests
 
 ```bash
 # Run all tests
 npm test
 
-# Run unit tests
-npm run test:unit
-
-# Run integration tests
-npm run test:integration
+# Run specific test types
+npm run test:unit        # Unit tests
+npm run test:integration # Integration tests
+npm run test:e2e         # E2E tests
 
 # Run with coverage
 npm run test:coverage
 ```
 
----
-
-## 🗄️ Database Migrations  
+### Test Structure
 
 ```bash
-# Generate migration
-npm run migration:generate -- -n MigrationName
-
-# Run migrations
-npm run migration:run
-
-# Revert migration
-npm run migration:revert
+src/test/
+├── unit/          # Unit tests
+├── integration/   # Integration tests
+├── e2e/           # End-to-end tests
+├── setup.ts       # Test setup
+└── helpers.ts     # Test helpers
 ```
 
 ---
 
-## 📜 Available Scripts  
+## 📑 API Documentation
+
+### 📘 Swagger Documentation
+Access Swagger UI: [**http://localhost:3000/api-docs**](http://localhost:3000/api-docs)
+
+### 📌 Postman Collection
+Import the [Postman Collection](postmanCollection.json) to test API endpoints.
+
+### 🌐 Main Endpoints
+
+#### 🔐 Authentication
+```
+POST /api/auth/register - Register new user
+POST /api/auth/login - Login user
+POST /api/auth/logout - Logout user
+```
+
+#### 👤 User Management
+```
+POST /api/users - Create user (Admin only)
+GET /api/users - List users (Admin, Manager)
+GET /api/users/:id - Get single user
+PUT /api/users/:id - Update user (Admin only)
+DELETE /api/users/:id - Delete user (Admin only)
+POST /api/users/:id/role - Assign role (Admin only)
+```
+
+#### 📌 Projects
+```
+GET /api/projects - List projects
+POST /api/projects - Create project (Manager/Admin)
+GET /api/projects/:id - Get project by ID
+PUT /api/projects/:id - Update project (Manager/Admin)
+DELETE /api/projects/:id - Delete project (Manager/Admin)
+```
+
+#### 📝 Tasks
+```
+GET /api/projects/:id/tasks - List tasks in a project
+POST /api/projects/:id/tasks - Create task (Manager)
+PUT /api/tasks/:id - Update task
+PATCH /api/tasks/:id/status - Change task status
+DELETE /api/tasks/:id - Delete task (Manager/Admin)
+```
+
+#### 📊 Dashboard
+```
+GET /api/dashboard/stats - Get statistics (Admin/Manager)
+GET /api/dashboard/progress - Get project progress (Admin/Manager)
+```
+
+#### 🔍 Search
+```
+GET /api/search/tasks?q={query} - Search tasks
+GET /api/search/projects?q={query} - Search projects
+GET /api/search/users?q={query} - Search users (Admin only)
+```
+
+All endpoints support pagination using `page` and `limit` query parameters:
+```
+GET /api/projects?page=1&limit=10
+GET /api/search/tasks?q=test&page=1&limit=10
+```
+
+---
+
+## 🐳 Docker Support
 
 ```bash
-npm start            # Start production server
+# Start development containers
+docker-compose up
+
+# Run tests in containers
+docker-compose -f docker-compose.test.yml up
+```
+
+---
+
+## 📜 Available Scripts
+
+```bash
 npm run dev          # Start development server
 npm run build        # Build for production
-npm test             # Run tests
-npm run docker:dev   # Run development Docker environment
-npm run docker:test  # Run tests in Docker
+npm start           # Start production server
+npm test            # Run tests
+npm run migration:run # Run migrations
 ```
 
 ---
 
-## ❗ Error Handling  
+## 🛠 Development Tools
 
-The API uses the following error codes:  
+### 📌 Database Management (If you are using docker)
+- Access **pgAdmin**: [**http://localhost:5050**](http://localhost:5050)
+- Credentials:
+  - **Email:** `admin@admin.com`
+  - **Password:** `admin`
 
-- `200` - Success ✅  
-- `201` - Created 🎉  
-- `400` - Bad Request ❌  
-- `401` - Unauthorized 🚫  
-- `403` - Forbidden 🔒  
-- `404` - Not Found 🔎  
-- `500` - Internal Server Error 🔥  
+### 📧 Email Testing (If you are using docker)
+- Access **MailHog**: [**http://localhost:8025**](http://localhost:8025)
 
-### Response Format  
+---
 
-✅ **Success Response**  
+## ⚠️ Error Handling
 
+The API follows standard HTTP status codes:
+
+- `200` - Success ✅
+- `201` - Created 🎉
+- `400` - Bad Request ❌
+- `401` - Unauthorized 🚫
+- `403` - Forbidden ⛔
+- `404` - Not Found 🔎
+- `500` - Internal Server Error ⚠️
+
+### 📝 Response Format
+
+**Success Response:**
 ```json
 {
   "status": "success",
@@ -230,8 +250,7 @@ The API uses the following error codes:
 }
 ```
 
-❌ **Error Response**  
-
+**Error Response:**
 ```json
 {
   "status": "error",
@@ -241,42 +260,3 @@ The API uses the following error codes:
 
 ---
 
-## 🛠 Development Tools  
-
-### 📌 Database Management  
-
-Access **pgAdmin**: [http://localhost:5050](http://localhost:5050)  
-**Email:** `admin@admin.com`  
-**Password:** `admin`  
-
-### 📧 Email Testing  
-
-Access **MailHog**: [http://localhost:8025](http://localhost:8025)  
-
----
-
-## 🚀 Deployment  
-
-### Using Docker (Production)  
-
-```bash
-docker-compose -f docker-compose.prod.yml up -d
-```
-
-### Manual Deployment  
-
-```bash
-npm run build
-npm start
-```
-
----
-
-## 🔒 Security  
-
-- 🔑 **JWT Authentication**  
-- 🔓 **Role-Based Access Control**  
-- 🛡 **Input Validation**  
-- 🏴‍☠️ **SQL Injection Protection**  
-
----
