@@ -56,7 +56,7 @@ export class TaskService {
     
     // Send notification to assignee
     if (assignee) {
-      await this.notificationService.sendTaskAssignmentNotification(savedTask, assignee);
+      //await this.notificationService.sendTaskAssignmentNotification(savedTask, assignee);
     }
 
     return savedTask;
@@ -148,10 +148,10 @@ export class TaskService {
     const updatedTask = await this.taskRepository.save(task);
     
     // Send notification for status update
-    await this.notificationService.sendTaskStatusUpdateNotification(
-      updatedTask,
-      previousStatus
-    );
+    // await this.notificationService.sendTaskStatusUpdateNotification(
+    //   updatedTask,
+    //   previousStatus
+    // );
 
     return updatedTask;
   }

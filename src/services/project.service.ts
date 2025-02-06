@@ -40,7 +40,7 @@ export class ProjectService {
    * Get all projects with pagination
    */
   async getAllProjects(page: number = 1, limit: number = 10): Promise<{
-    projects: Project[];
+    projects: any[];
     total: number;
   }> {
     const [projects, total] = await this.projectRepository.findAndCount({
@@ -49,7 +49,17 @@ export class ProjectService {
       relations: ['manager', 'tasks'],
     });
 
-    return { projects, total };
+    //return only the necessary fields
+    const sanitizedProjects = projects.map(project => ({
+      ...project,
+      manager: project.manager ? {
+        name: project.manager.name,
+        email: project.manager.email,
+        role: project.manager.role
+      } : null
+    }));
+
+    return { projects: sanitizedProjects, total };
   }
 
   /**
@@ -83,6 +93,8 @@ export class ProjectService {
     }
 
     Object.assign(project, updateData);
+
+    
     return await this.projectRepository.save(project);
   }
 

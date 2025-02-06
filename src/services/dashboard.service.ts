@@ -178,17 +178,17 @@ export class DashboardService {
     }
 
     const queryBuilder = this.projectRepository
-      .createQueryBuilder('project')
-      .leftJoinAndSelect('project.tasks', 'task')
-      .select([
-        'project.id',
-        'project.name',
-        'COUNT(task.id)', 'totalTasks',
-        'COUNT(CASE WHEN task.status = :completed THEN 1 END)', 'completedTasks',
-      ])
-      .setParameter('completed', TaskStatus.COMPLETED)
-      .groupBy('project.id')
-      .addGroupBy('project.name');
+  .createQueryBuilder('project')
+  .leftJoinAndSelect('project.tasks', 'task')
+  .select([
+    'project.id as project_id',
+    'project.name as project_name',
+    'COUNT(task.id) as totalTasks',
+    'COUNT(CASE WHEN task.status = :completed THEN 1 END) as completedTasks'
+  ])
+  .setParameter('completed', TaskStatus.COMPLETED)
+  .groupBy('project.id')
+  .addGroupBy('project.name');
 
     if (userId) {
       queryBuilder.where('project.managerId = :userId', { userId });

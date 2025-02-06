@@ -1,5 +1,5 @@
 
-# 🚀 Project Management System API  
+# Project Management System API  
 
 A **RESTful API** for project management, built with **Node.js**, **Express**, **TypeScript**, and **TypeORM**.  
 
@@ -7,9 +7,8 @@ A **RESTful API** for project management, built with **Node.js**, **Express**, *
 
 - 🔐 **JWT Authentication & Role-Based Access Control**  
 - 📊 **Project & Task Management**  
-- 🔍 **Advanced Search Functionality**  
+- 🔍 **Search Functionality**  
 - 📧 **Email Notifications**  
-- 🚀 **Real-time Updates**  
 - 📝 **Comprehensive API Documentation**  
 - 🗄️ **PostgreSQL Database**  
 - 💾 **Redis Caching**  
@@ -23,7 +22,7 @@ A **RESTful API** for project management, built with **Node.js**, **Express**, *
 - **Caching:** Redis  
 - **Containerization:** Docker & Docker Compose  
 - **Testing:** Jest, Supertest  
-- **Documentation:** Swagger / OpenAPI  
+- **Documentation:** Postman Collection & Swagger 
 
 ---
 
@@ -47,6 +46,23 @@ git clone https://github.com/yourusername/project-management-api.git
 cd project-management-api
 ```
 
+## 📂 Project Structure  
+
+```bash
+src/
+├── config/         # Configuration files
+├── controllers/    # Route controllers
+├── dtos/           # Data transfer objects 
+├── entities/       # TypeORM entities
+├── middleware/     # Custom middleware
+├── migrations/     # Database migrations
+├── routes/         # API routes
+├── services/       # Business logic
+└── test/           # Test files
+├── utils/          # Utility functions
+```
+
+
 ### 2️⃣ Install dependencies  
 
 ```bash
@@ -57,30 +73,6 @@ npm install
 
 ```bash
 cp .env.example .env
-```
-
-### 4️⃣ Start with Docker  
-
-```bash
-docker-compose up
-```
-
-The API will be available at **[http://localhost:3000](http://localhost:3000)** 🚀  
-
----
-
-## 🔧 Development  
-
-### Start the development server  
-
-```bash
-npm run dev
-```
-
-### Run tests  
-
-```bash
-npm test
 ```
 
 ### Generate migrations  
@@ -95,43 +87,11 @@ npm run migration:generate
 npm run migration:run
 ```
 
----
+### Start the development server  
 
-## 📖 API Documentation  
-
-Swagger documentation is available at:  
-📌 **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)**  
-
----
-
-## 🔑 Environment Variables  
-
-```ini
-# Application
-NODE_ENV=development
-PORT=3000
-JWT_SECRET=your-secret-key
-
-# Database
-DB_HOST=localhost
-DB_PORT=5432
-DB_USERNAME=postgres
-DB_PASSWORD=postgres
-DB_DATABASE=project_management
-
-# Redis
-REDIS_HOST=localhost
-REDIS_PORT=6379
-
-# Email
-SMTP_HOST=smtp.mailtrap.io
-SMTP_PORT=2525
-SMTP_USER=your-username
-SMTP_PASS=your-password
+```bash
+npm run dev
 ```
-
----
-
 ## 🐳 Docker Support  
 
 ### Build and run with Docker  
@@ -146,6 +106,19 @@ docker-compose -f docker-compose.prod.yml up
 # Testing
 docker-compose -f docker-compose.test.yml up
 ```
+
+The API will be available at **[http://localhost:3000](http://localhost:3000)** 🚀  
+
+---
+
+---
+
+## 📖 API Documentation  
+
+Swagger documentation is available at:  
+📌 **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)**  
+
+---
 
 ---
 
@@ -181,20 +154,6 @@ docker-compose -f docker-compose.test.yml up
 
 ---
 
-## 📂 Project Structure  
-
-```bash
-src/
-├── config/         # Configuration files
-├── controllers/    # Route controllers
-├── entities/       # TypeORM entities
-├── middleware/     # Custom middleware
-├── migrations/     # Database migrations
-├── routes/         # API routes
-├── services/       # Business logic
-├── utils/          # Utility functions
-└── test/           # Test files
-```
 
 ---
 
@@ -239,8 +198,6 @@ npm run migration:revert
 npm start            # Start production server
 npm run dev          # Start development server
 npm run build        # Build for production
-npm run lint         # Run ESLint
-npm run format       # Format code with Prettier
 npm test             # Run tests
 npm run docker:dev   # Run development Docker environment
 npm run docker:test  # Run tests in Docker

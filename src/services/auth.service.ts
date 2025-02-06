@@ -4,6 +4,7 @@ import { CreateUserDto, LoginDto } from '../dtos/user.dto';
 import { AppError } from '../middleware/error.middleware';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
+import { redisService } from './redis.service';
 
 export class AuthService {
   private userRepository = AppDataSource.getRepository(User);
@@ -13,10 +14,10 @@ export class AuthService {
    * @param userData User registration data
    * @returns Created user object (without password)
    */
-  async register(userData: CreateUserDto): Promise<Partial<User>> {
+  async register(createUserDto: CreateUserDto): Promise<Omit<User, 'password'>> {
     // Check if user already exists
     const existingUser = await this.userRepository.findOne({
-      where: { email: userData.email },
+      where: { email: createUserDto.email },
     });
 
     if (existingUser) {
@@ -24,11 +25,11 @@ export class AuthService {
     }
 
     // Hash password
-    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
 
     // Create new user
     const user = this.userRepository.create({
-      ...userData,
+      ...createUserDto,
       password: hashedPassword,
     });
 
@@ -44,9 +45,9 @@ export class AuthService {
    * @param loginData User login credentials
    * @returns JWT token and user data
    */
-  async login(loginData: LoginDto): Promise<{ token: string; user: Partial<User> }> {
+  async login(email: string, password: string) {
     const user = await this.userRepository.findOne({
-      where: { email: loginData.email },
+      where: { email },
     });
 
     if (!user) {
@@ -54,7 +55,7 @@ export class AuthService {
     }
 
     // Verify password
-    const isPasswordValid = await bcrypt.compare(loginData.password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       throw new AppError('Invalid credentials', 401);
     }
@@ -66,7 +67,30 @@ export class AuthService {
       { expiresIn: '24h' }
     );
 
-    const { password, ...userWithoutPassword } = user;
+    const { password: _, ...userWithoutPassword } = user;
     return { token, user: userWithoutPassword };
+  }
+
+  /**
+   * Logout user by invalidating their token
+   */
+  async logout(token: string): Promise<void> {
+    try {
+      // Verify the token first
+      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
+        exp: number;
+      };
+
+      // Calculate remaining time until token expiration
+      const currentTimestamp = Math.floor(Date.now() / 1000);
+      const expirationTime = decoded.exp - currentTimestamp;
+
+      if (expirationTime > 0) {
+        // Add token to blacklist with the remaining time
+        await redisService.addToBlacklist(token, expirationTime);
+      }
+    } catch (error) {
+      throw new AppError('Invalid token', 401);
+    }
   }
 }

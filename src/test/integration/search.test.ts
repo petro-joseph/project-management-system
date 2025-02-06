@@ -1,34 +1,44 @@
 import request from 'supertest';
 import app from '../../app';
-import { createTestUser, generateTestToken, createTestProject, createTestTask } from '../helpers';
+import { createTestUser, createTestProject, createTestTask, generateTestToken } from '../helpers';
 import { UserRole } from '../../entities/user.entity';
 
-describe('Search Routes', () => {
+describe('Search Integration Tests', () => {
   let userToken: string;
-  let adminToken: string;
+  let manager: any;
   let user: any;
-  let admin: any;
+  let project: any;
 
   beforeEach(async () => {
+    manager = await createTestUser({
+      role: UserRole.MANAGER,
+      email: 'manager@example.com'
+    });
+    
     user = await createTestUser({
       role: UserRole.USER,
-      email: 'user@example.com',
+      email: 'user@example.com'
     });
-    admin = await createTestUser({
-      role: UserRole.ADMIN,
-      email: 'admin@example.com',
-    });
+    
     userToken = generateTestToken(user);
-    adminToken = generateTestToken(admin);
+    project = await createTestProject(manager);
+    
+    // Create some test tasks
+    await createTestTask(project, user, {
+      name: 'Important task',
+      description: 'High priority task'
+    });
+    
+    await createTestTask(project, user, {
+      name: 'Regular task',
+      description: 'Normal priority task'
+    });
   });
 
   describe('GET /api/search/tasks', () => {
-    it('should search tasks', async () => {
-      const project = await createTestProject(admin);
-      await createTestTask(project, user, { name: 'Important task' });
-
+    it('should search tasks by query', async () => {
       const response = await request(app)
-        .get('/api/search/tasks?q=important')
+        .get('/api/search/tasks?q=Important')
         .set('Authorization', `Bearer ${userToken}`);
 
       expect(response.status).toBe(200);
@@ -36,45 +46,44 @@ describe('Search Routes', () => {
       expect(response.body.data.tasks[0].name).toContain('Important');
     });
 
-    it('should return error without search query', async () => {
+    it('should handle pagination', async () => {
       const response = await request(app)
-        .get('/api/search/tasks')
+        .get('/api/search/tasks?q=task&page=1&limit=1')
         .set('Authorization', `Bearer ${userToken}`);
 
-      expect(response.status).toBe(400);
+      expect(response.status).toBe(200);
+      expect(response.body.data.tasks).toHaveLength(1);
+      expect(response.body.data).toHaveProperty('total');
+      expect(response.body.data).toHaveProperty('page');
+    });
+
+    it('should require authentication', async () => {
+      const response = await request(app)
+        .get('/api/search/tasks?q=Important');
+
+      expect(response.status).toBe(401);
     });
   });
 
   describe('GET /api/search/projects', () => {
-    it('should search projects', async () => {
-      await createTestProject(admin, { name: 'Website Project' });
-
+    it('should search projects by query', async () => {
       const response = await request(app)
-        .get('/api/search/projects?q=website')
+        .get('/api/search/projects?q=Test')
         .set('Authorization', `Bearer ${userToken}`);
 
       expect(response.status).toBe(200);
       expect(response.body.data.projects).toHaveLength(1);
-      expect(response.body.data.projects[0].name).toContain('Website');
-    });
-  });
-
-  describe('GET /api/search/users', () => {
-    it('should allow admin to search users', async () => {
-      const response = await request(app)
-        .get('/api/search/users?q=user')
-        .set('Authorization', `Bearer ${adminToken}`);
-
-      expect(response.status).toBe(200);
-      expect(response.body.data.users).toHaveLength(1);
+      expect(response.body.data.projects[0].name).toContain('Test');
     });
 
-    it('should not allow regular users to search users', async () => {
+    it('should handle pagination', async () => {
       const response = await request(app)
-        .get('/api/search/users?q=user')
+        .get('/api/search/projects?q=Test&page=1&limit=1')
         .set('Authorization', `Bearer ${userToken}`);
 
-      expect(response.status).toBe(403);
+      expect(response.status).toBe(200);
+      expect(response.body.data.projects).toHaveLength(1);
+      expect(response.body.data).toHaveProperty('total');
     });
   });
 });

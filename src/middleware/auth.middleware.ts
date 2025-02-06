@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 import { AppError } from './error.middleware';
 import { UserRole } from '../entities/user.entity';
+import { redisService } from '../services/redis.service';
 
 // Extend Express Request type to include user information
 declare global {
@@ -18,12 +19,20 @@ declare global {
 /**
  * Middleware to verify JWT token and add user to request object
  */
-export const authenticate = (req: Request, res: Response, next: NextFunction) => {
+export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = req.headers.authorization?.split(' ')[1];
+    const authHeader = req.headers.authorization;
 
-    if (!token) {
+    if (!authHeader) {
       throw new AppError('Authentication required', 401);
+    }
+
+    const token = authHeader.split(' ')[1];
+
+    // Check if token is blacklisted
+    const isBlacklisted = await redisService.isBlacklisted(token);
+    if (isBlacklisted) {
+      throw new AppError('Token has been invalidated', 401);
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {

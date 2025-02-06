@@ -1,4 +1,3 @@
-// src/services/__tests__/auth.service.spec.ts
 import { AuthService } from '../auth.service';
 import { AppDataSource } from '../../config/data-source';
 import { User, UserRole } from '../../entities/user.entity';
@@ -52,10 +51,13 @@ describe('AuthService', () => {
 
       await authService.register(userData);
 
-      const result = await authService.login({
-        email: userData.email,
-        password: userData.password,
-      });
+      const result = await authService.login(
+        JSON.stringify({
+          email: userData.email,
+          password: userData.password,
+        }),
+        JSON.stringify({})
+      );
 
       expect(result).toHaveProperty('token');
       expect(result).toHaveProperty('user');
@@ -64,10 +66,13 @@ describe('AuthService', () => {
 
     it('should throw error for invalid credentials', async () => {
       await expect(
-        authService.login({
-          email: 'wrong@example.com',
-          password: 'wrongpassword',
-        })
+        authService.login(
+          JSON.stringify({
+            email: 'wrong@example.com',
+            password: 'wrongpassword',
+          }),
+          JSON.stringify({})
+        )
       ).rejects.toThrow(AppError);
     });
   });
