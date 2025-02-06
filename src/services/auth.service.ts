@@ -1,9 +1,9 @@
 import { AppDataSource } from '../config/data-source';
 import { User } from '../entities/user.entity';
 import { CreateUserDto, LoginDto } from '../dtos/user.dto';
-import { AppError } from '../middleware/error.middleware';
-import * as bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
+import { BadRequestError, UnauthorizedError } from '../middleware/error.middleware';
+import { hashPassword, comparePassword } from '../utils/password';
+import { generateToken, verifyToken } from '../utils/token';
 import { redisService } from './redis.service';
 
 export class AuthService {
@@ -21,11 +21,11 @@ export class AuthService {
     });
 
     if (existingUser) {
-      throw new AppError('User already exists', 400);
+      throw new BadRequestError('User already exists');
     }
 
     // Hash password
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+    const hashedPassword = await hashPassword(createUserDto.password);
 
     // Create new user
     const user = this.userRepository.create({
@@ -33,10 +33,10 @@ export class AuthService {
       password: hashedPassword,
     });
 
-    await this.userRepository.save(user);
+    const savedUser = await this.userRepository.save(user);
 
     // Remove password from response
-    const { password, ...userWithoutPassword } = user;
+    const { password, ...userWithoutPassword } = savedUser;
     return userWithoutPassword;
   }
 
@@ -51,21 +51,17 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new AppError('Invalid credentials', 401);
+      throw new UnauthorizedError('Invalid credentials');
     }
 
     // Verify password
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await comparePassword(password, user.password);
     if (!isPasswordValid) {
-      throw new AppError('Invalid credentials', 401);
+      throw new UnauthorizedError('Invalid credentials');
     }
 
     // Generate JWT token
-    const token = jwt.sign(
-      { userId: user.id, role: user.role },
-      process.env.JWT_SECRET!,
-      { expiresIn: '24h' }
-    );
+    const token = generateToken(user);
 
     const { password: _, ...userWithoutPassword } = user;
     return { token, user: userWithoutPassword };
@@ -77,20 +73,15 @@ export class AuthService {
   async logout(token: string): Promise<void> {
     try {
       // Verify the token first
-      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
-        exp: number;
-      };
-
-      // Calculate remaining time until token expiration
-      const currentTimestamp = Math.floor(Date.now() / 1000);
-      const expirationTime = decoded.exp - currentTimestamp;
+      const decoded = verifyToken(token);
+      const expirationTime = decoded.exp! - Math.floor(Date.now() / 1000);
 
       if (expirationTime > 0) {
         // Add token to blacklist with the remaining time
         await redisService.addToBlacklist(token, expirationTime);
       }
     } catch (error) {
-      throw new AppError('Invalid token', 401);
+      throw new UnauthorizedError('Invalid token');
     }
   }
 }

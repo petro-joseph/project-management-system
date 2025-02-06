@@ -2,7 +2,7 @@ import { AppDataSource } from '../config/data-source';
 import { Project } from '../entities/project.entity';
 import { User } from '../entities/user.entity';
 import { CreateProjectDto, UpdateProjectDto } from '../dtos/project.dto';
-import { AppError } from '../middleware/error.middleware';
+import { BadRequestError, UnauthorizedError, NotFoundError } from '../middleware/error.middleware';
 import { UserRole } from '../entities/user.entity';
 
 export class ProjectService {
@@ -21,11 +21,11 @@ export class ProjectService {
     });
 
     if (!manager) {
-      throw new AppError('Manager not found', 404);
+      throw new NotFoundError('Manager not found');
     }
 
     if (manager.role !== UserRole.MANAGER && manager.role !== UserRole.ADMIN) {
-      throw new AppError('User must be a manager to create projects', 403);
+      throw new UnauthorizedError('User must be a manager to create projects');
     }
 
     const project = this.projectRepository.create({
@@ -72,7 +72,7 @@ export class ProjectService {
     });
 
     if (!project) {
-      throw new AppError('Project not found', 404);
+      throw new NotFoundError('Project not found');
     }
 
     return project;
@@ -89,7 +89,7 @@ export class ProjectService {
     const project = await this.getProjectById(id);
 
     if (project.managerId !== userId) {
-      throw new AppError('Unauthorized to update this project', 403);
+      throw new UnauthorizedError('Unauthorized to update this project');
     }
 
     Object.assign(project, updateData);
@@ -105,7 +105,7 @@ export class ProjectService {
     const project = await this.getProjectById(id);
 
     if (project.managerId !== userId) {
-      throw new AppError('Unauthorized to delete this project', 403);
+      throw new UnauthorizedError('Unauthorized to delete this project');
     }
 
     await this.projectRepository.remove(project);

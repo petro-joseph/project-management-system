@@ -4,7 +4,7 @@ import { Server } from 'http';
 
 dotenv.config();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.NODE_ENV === 'test' ? 3001 : (process.env.PORT || 3000);
 
 export function setup(): Promise<Server> {
   return new Promise((resolve) => {

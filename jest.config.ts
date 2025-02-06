@@ -5,35 +5,20 @@ const config: Config.InitialOptions = {
   ...tsjPreset,
   preset: 'ts-jest',
   testEnvironment: 'node',
-  moduleFileExtensions: ['ts', 'js'],
-  rootDir: '.',
-  
-  // Global settings
-  verbose: true,
-  forceExit: true,
-  clearMocks: true,
-  resetMocks: true,
-  restoreMocks: true,
-  
-  // Coverage settings
-  coverageDirectory: 'coverage',
-  collectCoverageFrom: [
-    'src/**/*.{js,ts}',
-    '!src/test/**',
-    '!src/migrations/**',
-    '!src/**/*.d.ts',
-    '!src/types/**',
-  ],
-  coverageThreshold: {
-    global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80,
-    },
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1'
   },
-
-  // Projects configuration for different test types
+  transform: {
+    '^.+\\.tsx?$': ['ts-jest', {
+      isolatedModules: true,
+      esModuleInterop: true,
+      useESM: true
+    }]
+  },
+  testMatch: ['**/*.test.ts'],
+  setupFilesAfterEnv: ['<rootDir>/src/test/setup.ts'],
+  globalSetup: '<rootDir>/src/test/global-setup.ts',
+  globalTeardown: '<rootDir>/src/test/global-teardown.ts',
   projects: [
     {
       displayName: 'unit',
@@ -64,13 +49,29 @@ const config: Config.InitialOptions = {
     },
   ],
 
-  // Global setup/teardown
-  globalSetup: '<rootDir>/src/test/global-setup.ts',
-  globalTeardown: '<rootDir>/src/test/global-teardown.ts',
-
-  // Module name mapper for absolute imports
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
+  // Global settings
+  verbose: true,
+  forceExit: true,
+  clearMocks: true,
+  resetMocks: true,
+  restoreMocks: true,
+  
+  // Coverage settings
+  coverageDirectory: 'coverage',
+  collectCoverageFrom: [
+    'src/**/*.{js,ts}',
+    '!src/test/**',
+    '!src/migrations/**',
+    '!src/**/*.d.ts',
+    '!src/types/**',
+  ],
+  coverageThreshold: {
+    global: {
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80,
+    },
   },
 };
 

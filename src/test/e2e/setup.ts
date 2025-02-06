@@ -1,14 +1,17 @@
-import 'reflect-metadata';
+// Jest setup file for e2e tests
+import { Server } from 'http';
 import { DataSource } from 'typeorm';
-import { AppDataSource } from '../config/data-source';
+import { AppDataSource } from '../../config/data-source';
+import { setup } from '../../server';
 
 let connection: DataSource;
+let server: Server;
 
 beforeAll(async () => {
   try {
     // Set test environment
     process.env.NODE_ENV = 'test';
-    process.env.PORT = '3001';
+    process.env.PORT = '3002'; // Use a different port for e2e tests
 
     // Initialize connection
     connection = await AppDataSource.initialize();
@@ -23,11 +26,14 @@ beforeAll(async () => {
     
     // Create tables
     await connection.synchronize(true);
+
+    // Start server
+    server = await setup();
   } catch (error) {
-    console.error('Test setup error:', error);
+    console.error('E2E test setup error:', error);
     throw error;
   }
-});
+}, 30000); // Increase timeout for database setup
 
 beforeEach(async () => {
   if (connection && connection.isInitialized) {
@@ -41,6 +47,11 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
+  if (server) {
+    await new Promise<void>((resolve) => {
+      server.close(() => resolve());
+    });
+  }
   if (connection && connection.isInitialized) {
     await connection.destroy();
   }
