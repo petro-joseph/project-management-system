@@ -1,4 +1,4 @@
-```markdown
+
 #  Project Management System API
 
 A  **RESTful API** for project management, built with **Node.js, Express, TypeScript, and TypeORM**.
@@ -32,7 +32,6 @@ Ensure you have the following installed:
 - **Redis**
 - **Docker** (optional)
 
----
 
 ## 🚀 Setup Instructions
 
