@@ -215,12 +215,6 @@ npm run migration:run # Run migrations
 
 ## 🛠 Development Tools
 
-### 📌 Database Management (If you are using docker)
-- Access **pgAdmin**: [**http://localhost:5050**](http://localhost:5050)
-- Credentials:
-  - **Email:** `admin@admin.com`
-  - **Password:** `admin`
-
 ### 📧 Email Testing (If you are using docker)
 - Access **MailHog**: [**http://localhost:8025**](http://localhost:8025)
 
