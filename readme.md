@@ -199,6 +199,24 @@ src/test/
 ### 📘 Swagger Documentation
 Access Swagger UI: [**http://localhost:3000/api-docs**](http://localhost:3000/api-docs)
 
+### 📮 Postman Collection
+- Download the [Postman Collection](./postmanCollection.json)
+- Import into Postman
+- Collection includes:
+  - All API endpoints
+  - Environment variables
+  - Example requests and responses
+  - Authentication flows
+
+### Environment Setup in Postman
+1. Create a new environment in Postman
+2. Set the following variables:
+   ```
+   BASE_URL: http://localhost:3000
+   TOKEN: <your-auth-token>
+   ```
+3. Select the environment before making requests
+
 ### 🌐 Main Endpoints
 
 #### 🔐 Authentication
