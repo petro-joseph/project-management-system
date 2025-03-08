@@ -18,7 +18,7 @@ A robust **RESTful API** for project management, built with **Node.js, Express, 
   - [Running Tests](#running-tests)
   - [Test Structure](#test-structure)
 - [API Documentation](#-api-documentation)
-  - [Swagger Documentation](#-swagger-documentation)
+  - [Postman & Swagger Documentation](#-swagger-documentation)
   - [Main Endpoints](#-main-endpoints)
     - [Authentication](#-authentication)
     - [User Management](#-user-management)
