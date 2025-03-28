@@ -8,6 +8,10 @@ export class NotificationService {
   private transporter: nodemailer.Transporter;
   private userRepository = AppDataSource.getRepository(User);
 
+  /**
+   * Initializes the email transporter with the specified SMTP configuration.
+   * Verifies the email connection on initialization.
+   */
   constructor() {
     this.transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || 'mailhog',

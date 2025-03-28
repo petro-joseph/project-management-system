@@ -24,6 +24,12 @@ router.put(
   taskController.updateTask as RequestHandler
 );
 
+/**
+ * Updates the status of a task.
+ * @param {string} id - The ID of the task to update.
+ * @param {UserRole[]} - The user roles that are authorized to perform this action.
+ * @param {RequestHandler} - The controller function that handles the task status update.
+ */
 router.patch(
   '/:id/status',
   authorize([UserRole.ADMIN, UserRole.MANAGER, UserRole.USER]),

@@ -4,6 +4,11 @@ import { AppDataSource } from '../config/data-source';
 
 let connection: DataSource;
 
+/**
+ * Runs before all tests to set up the test environment, initialize the database connection,
+ * drop and recreate the database schema, enable the uuid-ossp extension, and create the tables.
+ * This ensures a clean database state for each test run.
+ */
 beforeAll(async () => {
   try {
     // Set test environment

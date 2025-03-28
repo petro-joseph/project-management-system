@@ -68,7 +68,9 @@ export class AuthService {
   }
 
   /**
-   * Logout user by invalidating their token
+   * Logs out a user by invalidating their token.
+   * @param token - The JWT token to be invalidated.
+   * @returns A Promise that resolves when the token has been added to the blacklist.
    */
   async logout(token: string): Promise<void> {
     try {

@@ -103,4 +103,5 @@ describe('ProjectService', () => {
       ).rejects.toThrow(AppError);
     });
   });
+
 });

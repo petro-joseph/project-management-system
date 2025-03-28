@@ -128,7 +128,8 @@ export class DashboardService {
   }
 
   /**
-   * Get user statistics
+   * Retrieves user statistics, including the total number of users and the count of users by role (admin, manager, user).
+   * @returns An object containing the total number of users and the count of users by role.
    */
   private async getUserStats() {
     const totalUsers = await this.userRepository.count();
@@ -199,8 +200,8 @@ export class DashboardService {
     const progress = projects.map((project) => ({
       id: project.project_id,
       name: project.project_name,
-      totalTasks: parseInt(project.totalTasks),
-      completedTasks: parseInt(project.completedTasks),
+      totalTasks: parseInt(project.totalTasks) || 0,
+      completedTasks: parseInt(project.completedTasks) || 0,
       progress: project.totalTasks > 0
         ? (project.completedTasks / project.totalTasks) * 100
         : 0,

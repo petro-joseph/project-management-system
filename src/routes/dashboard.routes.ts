@@ -16,6 +16,10 @@ router.get(
   dashboardController.getDashboardStats
 );
 
+/**
+ * Retrieves the project progress for the authenticated user.
+ * Only users with the 'ADMIN' or 'MANAGER' role are authorized to access this endpoint.
+ */
 router.get(
   '/progress',
   authorize([UserRole.ADMIN, UserRole.MANAGER]),
