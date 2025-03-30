@@ -1,0 +1,5 @@
+nginx/logs/access.log
+nginx/logs/error.log
+frontend/package.json.bak
+nginx/ssl/nginx.crt
+nginx/ssl/nginx.key

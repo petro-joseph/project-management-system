@@ -1,0 +1,166 @@
+version: '3.8'
+
+services:
+  nginx:
+    build:
+      context: './nginx'
+      dockerfile: Dockerfile
+    container_name: nginx_proxy
+    ports:
+      - "8085:8085"  # HTTP
+      - "8443:443"   # HTTPS (host:8443 maps to container:443)
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/logs:/var/log/nginx
+    depends_on:
+      - backend
+      - frontend
+      - grafana
+      - prometheus
+    networks:
+      - app-network
+    restart: unless-stopped
+    command: ["sh", "-c", "chmod +x /etc/nginx/generate-certs.sh && /etc/nginx/generate-certs.sh"]
+    environment:
+      - COMPOSE_ENV=development
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3001"  # Dynamic mapping
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_DATABASE=project_management
+      - JWT_SECRET=your-secret-key
+      - SMTP_HOST=mailhog
+      - SMTP_PORT=1025
+      - SMTP_FROM=noreply@projectmanagement.com
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_ADDR=redis://redis:6379
+    depends_on:
+      - postgres
+      - mailhog
+    networks:
+      - app-network
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000"  # Dynamic mapping
+    environment:
+      - NODE_ENV=development
+    networks:
+      - app-network
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - backend
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000"  # Dynamic mapping
+    volumes:
+      - ./grafana/provisioning/datasources/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+      - ./grafana/provisioning/dashboards/dashboard.yml:/etc/grafana/provisioning/dashboards/dashboard.yml
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SERVER_ROOT_URL=http://localhost/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - app-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090"  # Dynamic mapping
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - app-network
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    ports:
+      - "9100"  # Dynamic mapping
+    networks:
+      - app-network
+
+  postgres:
+    image: postgres:13-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=project_management
+    ports:
+      - "5432"  # Dynamic mapping
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025"  # Dynamic mapping
+      - "8025"  # Dynamic mapping
+    networks:
+      - app-network
+
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    ports:
+      - "8080"  # Dynamic mapping
+    environment:
+      - ADMINER_DEFAULT_SERVER=postgres
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379"  # Dynamic mapping
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+
+  redis-exporter:
+    image: oliver006/redis_exporter
+    container_name: redis-exporter
+    ports:
+      - "9121"  # Dynamic mapping
+    networks:
+      - app-network
+    environment:
+      - REDIS_ADDR=redis:6379
+
+volumes:
+  postgres_data:
+  grafana-storage:
+  redis_data:
+
+networks:
+  app-network:
+    driver: bridge

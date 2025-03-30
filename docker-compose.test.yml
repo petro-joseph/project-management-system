@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+      - NODE_ENV=test
+      - DB_HOST=postgres_test
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_DATABASE=project_management_test
+      - JWT_SECRET=test-secret-key
+      - SMTP_HOST=mailhog_test
+      - SMTP_PORT=1025
+      - SMTP_FROM=noreply@projectmanagement.com
+    command: npm run test
+    depends_on:
+      - postgres_test
+      - mailhog_test
+    networks:
+      - test-network
+
+  postgres_test:
+    image: postgres:13-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=project_management_test
+    networks:
+      - test-network
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+
+  mailhog_test:
+    image: mailhog/mailhog
+    ports:
+      - "8026:8025" # Different port from dev environment
+    networks:
+      - test-network
+
+networks:
+  test-network:
+    driver: bridge
+
+volumes:
+  postgres_test_data:

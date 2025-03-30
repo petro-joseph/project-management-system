@@ -1,0 +1,31 @@
+# Use multi-stage build to keep final image small
+FROM node:18-alpine AS builder
+
+WORKDIR /usr/src/app
+
+# Install dependencies first to leverage Docker cache
+COPY package*.json ./
+RUN npm install --omit=dev --registry=https://registry.npm.taobao.org
+
+# Copy the rest of the application
+COPY . .
+
+# Set environment variables
+ENV NODE_ENV production
+
+# Optimize the final image
+FROM node:18-alpine
+
+WORKDIR /usr/src/app
+
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY . .
+
+# Install runtime dependencies
+RUN apk add --no-cache \
+    ca-certificates \
+    && update-ca-certificates
+
+EXPOSE 3000
+
+CMD ["npm", "run", "start"]
