@@ -11,9 +11,12 @@ if [ ! -f "/etc/nginx/ssl/nginx.crt" ] || [ ! -f "/etc/nginx/ssl/nginx.key" ]; t
     # Generate a self-signed certificate
     openssl req -new -x509 -key /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt \
         -days 365 \
-        -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=example.com"
+        -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=${CERT_CN:-localhost}"
     
     # Set proper permissions
     chmod 600 /etc/nginx/ssl/nginx.key
     chmod 644 /etc/nginx/ssl/nginx.crt
 fi
+
+# Execute the default Nginx command
+exec "$@"

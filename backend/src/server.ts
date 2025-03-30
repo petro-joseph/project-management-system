@@ -10,24 +10,35 @@ dotenv.config();
 // Swagger setup
 const options = {
   swaggerDefinition,
-  apis: ['./src/routes/*.ts'], // Path to the API docs
+  apis: ['./src/routes/*.ts'],
 };
 
 const swaggerSpec = swaggerJsdoc(options);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-const PORT = process.env.NODE_ENV === 'test' ? 3001 : (process.env.PORT || 3000);
+const PORT = process.env.NODE_ENV === 'test' ? 3001 : (process.env.PORT || 3001);
 
 export function setup(): Promise<Server> {
-  return new Promise((resolve) => {
-    const server = app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-      resolve(server);
-    });
+  return new Promise((resolve, reject) => {
+    try {
+      const server = app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+        resolve(server);
+      });
+      server.on('error', (err) => {
+        console.error('Server startup error:', err);
+        reject(err);
+      });
+    } catch (err) {
+      console.error('Setup failed:', err);
+      reject(err);
+    }
   });
 }
 
-// Only start the server if this file is run directly
 if (require.main === module) {
-  setup();
+  setup().catch((err) => {
+    console.error('Failed to start server:', err);
+    process.exit(1);
+  });
 }

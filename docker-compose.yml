@@ -8,9 +8,8 @@ services:
     container_name: nginx_proxy
     ports:
       - "8085:8085"  # HTTP
-      - "8443:443"   # HTTPS (host:8443 maps to container:443)
+      - "8443:443"   # HTTPS
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/logs:/var/log/nginx
     depends_on:
       - backend
@@ -20,8 +19,8 @@ services:
     networks:
       - app-network
     restart: unless-stopped
-    command: ["sh", "-c", "chmod +x /etc/nginx/generate-certs.sh && /etc/nginx/generate-certs.sh"]
     environment:
+      - CERT_CN=localhost
       - COMPOSE_ENV=development
 
   backend:
@@ -29,9 +28,9 @@ services:
       context: ./backend
       dockerfile: Dockerfile.dev
     ports:
-      - "3001"  # Dynamic mapping
+      - "3001:3001"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=${NODE_ENV}
       - DB_HOST=postgres
       - DB_PORT=5432
       - DB_USERNAME=postgres
@@ -58,9 +57,9 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.dev
     ports:
-      - "3000"  # Dynamic mapping
+      - "3000:3000"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=${NODE_ENV}
     networks:
       - app-network
     volumes:
@@ -73,11 +72,12 @@ services:
     image: grafana/grafana:latest
     container_name: grafana
     ports:
-      - "3000"  # Dynamic mapping
+      - "3002:3000"  # Avoid conflict with frontend
     volumes:
       - ./grafana/provisioning/datasources/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
       - ./grafana/provisioning/dashboards/dashboard.yml:/etc/grafana/provisioning/dashboards/dashboard.yml
       - ./grafana/dashboards:/var/lib/grafana/dashboards
+      - grafana-storage:/var/lib/grafana
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_SERVER_ROOT_URL=http://localhost/grafana
@@ -90,7 +90,7 @@ services:
     image: prom/prometheus:latest
     container_name: prometheus
     ports:
-      - "9090"  # Dynamic mapping
+      - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
@@ -100,7 +100,7 @@ services:
     image: prom/node-exporter:latest
     container_name: node-exporter
     ports:
-      - "9100"  # Dynamic mapping
+      - "9100:9100"
     networks:
       - app-network
 
@@ -110,8 +110,6 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=project_management
-    ports:
-      - "5432"  # Dynamic mapping
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -120,8 +118,8 @@ services:
   mailhog:
     image: mailhog/mailhog
     ports:
-      - "1025"  # Dynamic mapping
-      - "8025"  # Dynamic mapping
+      - "1025:1025"
+      - "8025:8025"
     networks:
       - app-network
 
@@ -129,7 +127,7 @@ services:
     image: adminer:latest
     container_name: adminer
     ports:
-      - "8080"  # Dynamic mapping
+      - "8080:8080"
     environment:
       - ADMINER_DEFAULT_SERVER=postgres
     depends_on:
@@ -139,8 +137,6 @@ services:
 
   redis:
     image: redis:alpine
-    ports:
-      - "6379"  # Dynamic mapping
     volumes:
       - redis_data:/data
     networks:
@@ -150,7 +146,7 @@ services:
     image: oliver006/redis_exporter
     container_name: redis-exporter
     ports:
-      - "9121"  # Dynamic mapping
+      - "9121:9121"
     networks:
       - app-network
     environment:

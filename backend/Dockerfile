@@ -1,30 +1,19 @@
-# Base image
-FROM node:16-alpine
+FROM node:18-alpine
 
-# Create app directory
 WORKDIR /usr/src/app
 
-# Install PostgreSQL client for wait-for-it script
-RUN apk add --no-cache postgresql-client
-
-# Install dependencies
+# Install dependencies including dev tools
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 
-# Copy source code
+# Install ts-node globally (optional, if not in package.json)
+RUN npm install -g ts-node
+
+# Copy application code
 COPY . .
 
-# Make scripts executable
-COPY scripts/docker-entrypoint.sh /usr/local/bin/
-COPY scripts/wait-for-it.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/wait-for-it.sh
+# Expose the port from docker-compose.yml
+EXPOSE 3001
 
-# Build TypeScript
-RUN npm run build
-
-# Expose port
-EXPOSE 3000
-
-# Use entrypoint script
-ENTRYPOINT ["docker-entrypoint.sh"]
+# Start the app
+CMD ["npm", "start"]
