@@ -4,3 +4,4 @@ frontend/package.json.bak
 nginx/ssl/nginx.crt
 nginx/ssl/nginx.key
 .env
+frontend/README_data_flow.md
