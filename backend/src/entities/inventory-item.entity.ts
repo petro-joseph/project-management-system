@@ -18,8 +18,8 @@ export class InventoryItem {
   @Column()
   unitOfMeasure!: string;
 
-  @Column({ nullable: true })
-  location!: string;
+  @ManyToOne(() => require('./location.entity').Location, { nullable: true })
+  location?: import('./location.entity').Location | null;
 
   @Column({ nullable: true })
   projectId!: number;
@@ -30,8 +30,8 @@ export class InventoryItem {
   @Column({ type: 'timestamp', nullable: true })
   purchaseDate!: Date;
 
-  @Column({ nullable: true })
-  supplier!: string;
+  @ManyToOne(() => require('./supplier.entity').Supplier, { nullable: true })
+  supplier?: import('./supplier.entity').Supplier | null;
 
   @Column('decimal', { precision: 12, scale: 2, default: 0 })
   costPerUnit!: number;
@@ -47,4 +47,16 @@ export class InventoryItem {
 
   @Column({ default: 'available' })
   status!: string;
+
+  @Column({ nullable: true })
+  sku!: string;
+
+  @Column({ nullable: true })
+  barcode!: string;
+
+  @Column({ nullable: true })
+  serialNumber!: string;
+
+  @Column({ nullable: true })
+  imageUrl!: string;
 }

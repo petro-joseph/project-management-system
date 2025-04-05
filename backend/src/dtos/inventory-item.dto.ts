@@ -3,10 +3,10 @@ export class CreateInventoryItemDto {
   description?: string;
   quantity!: number;
   unitOfMeasure!: string;
-  location?: string;
+  locationId?: number;
   projectId?: number;
   purchaseDate?: Date;
-  supplier?: string;
+  supplierId?: number;
   costPerUnit?: number;
   totalValue?: number;
   lowStockThreshold?: number;
@@ -19,10 +19,10 @@ export class UpdateInventoryItemDto {
   description?: string;
   quantity?: number;
   unitOfMeasure?: string;
-  location?: string;
+  locationId?: number;
   projectId?: number;
   purchaseDate?: Date;
-  supplier?: string;
+  supplierId?: number;
   costPerUnit?: number;
   totalValue?: number;
   lowStockThreshold?: number;

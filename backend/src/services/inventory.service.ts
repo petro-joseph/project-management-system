@@ -1,5 +1,7 @@
 import { AppDataSource } from '../config/data-source';
 import { InventoryItem } from '../entities/inventory-item.entity';
+import { Supplier } from '../entities/supplier.entity';
+import { Location } from '../entities/location.entity';
 import { Repository } from 'typeorm';
 import { CreateInventoryItemDto, UpdateInventoryItemDto } from '../dtos/inventory-item.dto';
 
@@ -11,7 +13,20 @@ export class InventoryService {
   }
 
   async createInventoryItem(data: CreateInventoryItemDto): Promise<InventoryItem> {
-    const item = this.inventoryRepo.create(data);
+    const { supplierId, locationId, ...rest } = data as any;
+
+    const item = Object.assign(new InventoryItem(), rest);
+
+    if (supplierId) {
+      const supplierRepo = AppDataSource.getRepository(Supplier);
+      item.supplier = await supplierRepo.findOne({ where: { id: supplierId } });
+    }
+
+    if (locationId) {
+      const locationRepo = AppDataSource.getRepository(Location);
+      item.location = await locationRepo.findOne({ where: { id: locationId } });
+    }
+
     return this.inventoryRepo.save(item);
   }
 
@@ -26,7 +41,20 @@ export class InventoryService {
   async updateInventoryItem(id: number, data: UpdateInventoryItemDto): Promise<InventoryItem | null> {
     const item = await this.inventoryRepo.findOneBy({ id });
     if (!item) return null;
-    Object.assign(item, data);
+
+    const { supplierId, locationId, ...rest } = data as any;
+    Object.assign(item, rest);
+
+    if (supplierId !== undefined) {
+      const supplierRepo = AppDataSource.getRepository(Supplier);
+      item.supplier = supplierId ? await supplierRepo.findOne({ where: { id: supplierId } }) : null;
+    }
+
+    if (locationId !== undefined) {
+      const locationRepo = AppDataSource.getRepository(Location);
+      item.location = locationId ? await locationRepo.findOne({ where: { id: locationId } }) : null;
+    }
+
     return this.inventoryRepo.save(item);
   }
 
