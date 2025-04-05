@@ -9,6 +9,7 @@ import dashboardRoutes from './routes/dashboard.routes';
 import searchRoutes from './routes/search.routes';
 import taskRoutes from './routes/task.routes';
 import userRoutes from './routes/user.routes';
+import activityRoutes from './routes/activity.routes';
 import fixedAssetRoutes from './routes/fixed-asset.routes';
 
 const app = express();
@@ -24,6 +25,7 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/tasks', taskRoutes);
+app.use('/api', activityRoutes);
 app.use('/api/assets', fixedAssetRoutes);
 
 // Error handling middleware should be last
