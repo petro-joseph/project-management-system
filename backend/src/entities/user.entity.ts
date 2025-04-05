@@ -49,4 +49,25 @@ import {
   
     @UpdateDateColumn()
     updated_at!: Date;
+
+    @Column({ nullable: true })
+    status?: string;
+
+    @Column({ type: 'timestamp', nullable: true })
+    lastLogin?: Date;
+
+    @Column({ nullable: true })
+    phoneNumber?: string;
+
+    @Column({ nullable: true })
+    department?: string;
+
+    @Column({ nullable: true })
+    jobTitle?: string;
+
+    @Column({ nullable: true })
+    profilePictureUrl?: string;
+
+    @Column({ type: 'simple-json', nullable: true })
+    permissions?: string[];
   }

@@ -44,4 +44,16 @@ import {
   
     @UpdateDateColumn()
     updated_at!: Date;
+
+    @Column({ nullable: true })
+    status?: string;
+
+    @Column({ nullable: true })
+    clientName?: string;
+
+    @Column('decimal', { precision: 12, scale: 2, nullable: true })
+    budget?: number;
+
+    @Column('decimal', { precision: 12, scale: 2, nullable: true })
+    spent?: number;
   }
