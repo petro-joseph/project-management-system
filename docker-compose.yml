@@ -27,8 +27,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
-    ports:
-      - "3001:3001"
+    # Removed ports: "3001:3001" - Access via Nginx
     environment:
       - NODE_ENV=${NODE_ENV}
       - DB_HOST=postgres
@@ -56,8 +55,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
-    ports:
-      - "3000:3000"
+    # Removed ports: "3000:3000" - Access via Nginx
     environment:
       - NODE_ENV=${NODE_ENV}
     networks:
@@ -71,8 +69,7 @@ services:
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
-    ports:
-      - "3002:3000"  # Avoid conflict with frontend
+    # Removed ports: "3002:3000" - Access via Nginx
     volumes:
       - ./grafana/provisioning/datasources/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
       - ./grafana/provisioning/dashboards/dashboard.yml:/etc/grafana/provisioning/dashboards/dashboard.yml
@@ -80,7 +77,8 @@ services:
       - grafana-storage:/var/lib/grafana
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_SERVER_ROOT_URL=http://localhost/grafana
+      - GF_SERVER_ROOT_URL=https://localhost:8443/grafana/
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true  # Enable subpath support
     depends_on:
       - prometheus
     networks:
@@ -89,8 +87,7 @@ services:
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
-    ports:
-      - "9090:9090"
+    # Removed ports: "9090:9090" - Access via Nginx
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
@@ -99,8 +96,7 @@ services:
   node-exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
-    ports:
-      - "9100:9100"
+    # Removed ports: "9100:9100" - Access via Nginx
     networks:
       - app-network
 
@@ -118,16 +114,15 @@ services:
   mailhog:
     image: mailhog/mailhog
     ports:
-      - "1025:1025"
-      - "8025:8025"
+      - "1025:1025"  # Keep SMTP port internal
+      - "8025:8025"  # Keep MailHog UI accessible
     networks:
       - app-network
 
   adminer:
     image: adminer:latest
     container_name: adminer
-    ports:
-      - "8080:8080"
+    # Removed ports: "8080:8080" - Access via Nginx
     environment:
       - ADMINER_DEFAULT_SERVER=postgres
     depends_on:
@@ -145,8 +140,7 @@ services:
   redis-exporter:
     image: oliver006/redis_exporter
     container_name: redis-exporter
-    ports:
-      - "9121:9121"
+    # Removed ports: "9121:9121" - Access via Nginx
     networks:
       - app-network
     environment:

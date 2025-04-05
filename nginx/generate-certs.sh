@@ -1,22 +1,37 @@
 #!/bin/sh
 
-# Check if certificates already exist
+echo "Starting certificate generation..."
+
 if [ ! -f "/etc/nginx/ssl/nginx.crt" ] || [ ! -f "/etc/nginx/ssl/nginx.key" ]; then
-    # Create the SSL directory if it doesn't exist
-    mkdir -p /etc/nginx/ssl
+    echo "Certificates not found, generating..."
+    mkdir -p /etc/nginx/ssl || { echo "Failed to create /etc/nginx/ssl"; exit 1; }
     
-    # Generate a private key
-    openssl genpkey -algorithm RSA -out /etc/nginx/ssl/nginx.key
+    echo "Generating private key..."
+    openssl genpkey -algorithm RSA -out /etc/nginx/ssl/nginx.key || { echo "Failed to generate key"; exit 1; }
+    if [ -f "/etc/nginx/ssl/nginx.key" ]; then
+        echo "Private key generated."
+    else
+        echo "Private key not found after generation!"
+        exit 1
+    fi
     
-    # Generate a self-signed certificate
+    echo "Generating certificate..."
     openssl req -new -x509 -key /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt \
         -days 365 \
-        -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=${CERT_CN:-localhost}"
+        -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=${CERT_CN:-localhost}" || { echo "Failed to generate cert"; exit 1; }
+    if [ -f "/etc/nginx/ssl/nginx.crt" ]; then
+        echo "Certificate generated."
+    else
+        echo "Certificate not found after generation!"
+        exit 1
+    fi
     
-    # Set proper permissions
-    chmod 600 /etc/nginx/ssl/nginx.key
-    chmod 644 /etc/nginx/ssl/nginx.crt
+    chmod 600 /etc/nginx/ssl/nginx.key || { echo "Failed to set key permissions"; exit 1; }
+    chmod 644 /etc/nginx/ssl/nginx.crt || { echo "Failed to set cert permissions"; exit 1; }
+    echo "Certificates generated successfully."
+else
+    echo "Certificates already exist."
 fi
 
-# Execute the default Nginx command
+echo "Starting Nginx..."
 exec "$@"

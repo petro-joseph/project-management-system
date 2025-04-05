@@ -12,6 +12,6 @@ RUN chmod +x /etc/nginx/generate-certs.sh && \
     chmod 700 /etc/nginx/ssl
 
 # Wait for backend, generate certs, then start Nginx
-ENTRYPOINT ["/etc/nginx/wait-for-it.sh", "backend:3001", "--", "/etc/nginx/generate-certs.sh", "nginx", "-g", "daemon off;"]
-
+# ENTRYPOINT ["/etc/nginx/generate-certs.sh", "nginx", "-g", "daemon off;"]
+ENTRYPOINT ["/etc/nginx/wait-for-it.sh", "backend:3001", "--", "/etc/nginx/wait-for-it.sh", "frontend:3000", "--", "/etc/nginx/wait-for-it.sh", "grafana:3000", "--", "/etc/nginx/wait-for-it.sh", "prometheus:9090", "--", "/etc/nginx/wait-for-it.sh", "adminer:8080", "--", "/etc/nginx/generate-certs.sh", "nginx", "-g", "daemon off;"]
 EXPOSE 8085 443

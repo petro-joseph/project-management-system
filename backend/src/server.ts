@@ -15,6 +15,7 @@ const options = {
 
 const swaggerSpec = swaggerJsdoc(options);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/docs/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));  // Handle trailing slash
 
 const PORT = process.env.NODE_ENV === 'test' ? 3001 : (process.env.PORT || 3001);
 
