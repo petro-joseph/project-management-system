@@ -11,21 +11,21 @@ router.use(authenticate);
 
 // Log activity - all roles
 router.post(
-  '/activities',
+  '/',
   authorize([UserRole.ADMIN, UserRole.MANAGER, UserRole.USER]),
   controller.logActivity as RequestHandler
 );
 
 // Get recent activities - all roles
 router.get(
-  '/activities/recent',
+  '/recent',
   authorize([UserRole.ADMIN, UserRole.MANAGER, UserRole.USER]),
   controller.getRecentActivities as RequestHandler
 );
 
 // Get activities for a specific user - admin, manager, or the user themselves
 router.get(
-  '/activities/user/:userId',
+  '/user/:userId',
   (req, res, next) => {
     if (
       req.user?.role === UserRole.ADMIN ||

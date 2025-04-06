@@ -358,6 +358,56 @@ Object.assign(swaggerDefinition.paths, {
       }
     }
   },
+  '/search/users': {
+    get: {
+      tags: ['Search'],
+      summary: 'Search users',
+      parameters: [
+        {
+          name: 'query',
+          in: 'query',
+          required: true,
+          schema: { type: 'string' },
+          description: 'Search term for user name, email, or other fields'
+        }
+      ],
+      responses: {
+        '200': {
+          description: 'Search results for users',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'array',
+                items: { $ref: '#/components/schemas/User' }
+              },
+              examples: {
+                example1: {
+                  summary: 'Sample user search response',
+                  value: [
+                    {
+                      id: '123e4567-e89b-12d3-a456-426614174000',
+                      name: 'John Doe',
+                      email: 'john.doe@example.com',
+                      role: 'manager',
+                      created_at: '2023-01-01T12:00:00Z',
+                      updated_at: '2023-01-02T12:00:00Z',
+                      status: 'active',
+                      lastLogin: '2023-01-03T12:00:00Z',
+                      phoneNumber: '+1234567890',
+                      department: 'Engineering',
+                      jobTitle: 'Project Manager',
+                      profilePictureUrl: 'https://example.com/profile.jpg',
+                      permissions: ['read', 'write']
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
 
   
   // PROJECTS

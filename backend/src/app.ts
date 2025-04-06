@@ -31,15 +31,15 @@ const options = {
 const swaggerSpec = swaggerJsdoc(options);
 
 // Routes will be added here
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use('/api/auth', authRoutes);
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/inventory', inventoryRoutes);
-app.use('/api', activityRoutes);
+app.use('/api/activities', activityRoutes);
 app.use('/api/assets', fixedAssetRoutes);
 
 // Error handling middleware should be last
