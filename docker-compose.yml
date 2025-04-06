@@ -10,6 +10,7 @@ services:
       - "8085:8085"  # HTTP
       - "8443:443"   # HTTPS
     volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro # Mount the Nginx configuration file
       - ./nginx/logs:/var/log/nginx
     depends_on:
       - backend
@@ -35,7 +36,7 @@ services:
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
       - DB_DATABASE=project_management
-      - JWT_SECRET=your-secret-key
+      - JWT_SECRET=${JWT_SECRET}
       - SMTP_HOST=mailhog
       - SMTP_PORT=1025
       - SMTP_FROM=noreply@projectmanagement.com
@@ -67,7 +68,8 @@ services:
       - backend
 
   grafana:
-    image: grafana/grafana:latest
+    # Pin Grafana version
+    image: grafana/grafana:10.2.3
     container_name: grafana
     # Removed ports: "3002:3000" - Access via Nginx
     volumes:
@@ -85,7 +87,8 @@ services:
       - app-network
 
   prometheus:
-    image: prom/prometheus:latest
+    # Pin Prometheus version
+    image: prom/prometheus:v2.48.1
     container_name: prometheus
     # Removed ports: "9090:9090" - Access via Nginx
     volumes:
@@ -94,14 +97,16 @@ services:
       - app-network
 
   node-exporter:
-    image: prom/node-exporter:latest
+    # Pin Node Exporter version
+    image: prom/node-exporter:v1.7.0
     container_name: node-exporter
     # Removed ports: "9100:9100" - Access via Nginx
     networks:
       - app-network
 
   postgres:
-    image: postgres:13-alpine
+    # Pin Postgres version
+    image: postgres:15-alpine
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -120,7 +125,8 @@ services:
       - app-network
 
   adminer:
-    image: adminer:latest
+    # Pin Adminer version
+    image: adminer:4.8.1
     container_name: adminer
     # Removed ports: "8080:8080" - Access via Nginx
     environment:
@@ -131,14 +137,16 @@ services:
       - app-network
 
   redis:
-    image: redis:alpine
+    # Pin Redis version
+    image: redis:7-alpine
     volumes:
       - redis_data:/data
     networks:
       - app-network
 
   redis-exporter:
-    image: oliver006/redis_exporter
+    # Pin Redis Exporter version
+    image: oliver006/redis_exporter:v1.55.0
     container_name: redis-exporter
     # Removed ports: "9121:9121" - Access via Nginx
     networks:

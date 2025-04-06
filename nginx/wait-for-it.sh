@@ -52,18 +52,51 @@ wait_for()
 wait_for_wrapper()
 {
     # In order to support SIGINT during timeout: http://unix.stackexchange.com/a/57692
-    if [[ $WAITFORIT_QUIET -eq 1 ]]; then
-        timeout $WAITFORIT_BUSYTIMEFLAG $WAITFORIT_TIMEOUT $0 --quiet --child --host=$WAITFORIT_HOST --port=$WAITFORIT_PORT --timeout=$WAITFORIT_TIMEOUT &
+    # Call timeout with appropriate syntax based on whether it's BusyBox or not.
+    local timeout_cmd
+    if [[ $WAITFORIT_ISBUSY -eq 1 ]]; then
+        # BusyBox: timeout SECS cmd ...
+        timeout_cmd="timeout $WAITFORIT_TIMEOUT"
+        echoerr "$WAITFORIT_cmdname: using busybox timeout syntax: $timeout_cmd"
     else
-        timeout $WAITFORIT_BUSYTIMEFLAG $WAITFORIT_TIMEOUT $0 --child --host=$WAITFORIT_HOST --port=$WAITFORIT_PORT --timeout=$WAITFORIT_TIMEOUT &
+        # GNU timeout: timeout -t SECS cmd ...
+        # Ensure timeout command exists before using -t
+        if ! command -v timeout >/dev/null 2>&1; then
+            echoerr "$WAITFORIT_cmdname: timeout command not found, proceeding without timeout"
+            # Directly execute the child process without timeout
+             if [[ $WAITFORIT_QUIET -eq 1 ]]; then
+                $0 --quiet --child --host=$WAITFORIT_HOST --port=$WAITFORIT_PORT --timeout=$WAITFORIT_TIMEOUT &
+            else
+                $0 --child --host=$WAITFORIT_HOST --port=$WAITFORIT_PORT --timeout=$WAITFORIT_TIMEOUT &
+            fi
+            WAITFORIT_PID=$!
+            trap "kill -INT -$WAITFORIT_PID" INT
+            wait $WAITFORIT_PID
+            return $?
+        fi
+        timeout_cmd="timeout -t $WAITFORIT_TIMEOUT"
+        echoerr "$WAITFORIT_cmdname: using standard timeout syntax: $timeout_cmd"
     fi
+
+    if [[ $WAITFORIT_QUIET -eq 1 ]]; then
+        $timeout_cmd $0 --quiet --child --host=$WAITFORIT_HOST --port=$WAITFORIT_PORT --timeout=$WAITFORIT_TIMEOUT &
+    else
+        $timeout_cmd $0 --child --host=$WAITFORIT_HOST --port=$WAITFORIT_PORT --timeout=$WAITFORIT_TIMEOUT &
+    fi
+
     WAITFORIT_PID=$!
     trap "kill -INT -$WAITFORIT_PID" INT
     wait $WAITFORIT_PID
     WAITFORIT_RESULT=$?
-    if [[ $WAITFORIT_RESULT -ne 0 ]]; then
+    # Check specifically for timeout exit code 124
+    if [[ $WAITFORIT_RESULT -eq 124 ]]; then
         echoerr "$WAITFORIT_cmdname: timeout occurred after waiting $WAITFORIT_TIMEOUT seconds for $WAITFORIT_HOST:$WAITFORIT_PORT"
+        # Return non-zero on timeout for clarity, although 124 is standard
+        return 1
+    elif [[ $WAITFORIT_RESULT -ne 0 ]]; then
+         echoerr "$WAITFORIT_cmdname: child process exited with error code $WAITFORIT_RESULT"
     fi
+    # Return the child process's exit code on success or non-timeout error
     return $WAITFORIT_RESULT
 }
 
@@ -142,15 +175,18 @@ WAITFORIT_CHILD=${WAITFORIT_CHILD:-0}
 WAITFORIT_QUIET=${WAITFORIT_QUIET:-0}
 
 # Check to see if timeout is from busybox?
+# We need to determine if the timeout command is the busybox version,
+# as it has different syntax (timeout SECS cmd vs timeout -t SECS cmd)
+WAITFORIT_ISBUSY=0
 WAITFORIT_TIMEOUT_PATH=$(type -p timeout)
-WAITFORIT_TIMEOUT_PATH=$(realpath $WAITFORIT_TIMEOUT_PATH 2>/dev/null || echo $WAITFORIT_TIMEOUT_PATH)
-if [[ $WAITFORIT_TIMEOUT_PATH =~ "busybox" ]]; then
-    WAITFORIT_ISBUSY=1
-    WAITFORIT_BUSYTIMEFLAG="-t"
-else
-    WAITFORIT_ISBUSY=0
-    WAITFORIT_BUSYTIMEFLAG=""
+if [ -n "$WAITFORIT_TIMEOUT_PATH" ]; then
+    WAITFORIT_TIMEOUT_PATH=$(realpath $WAITFORIT_TIMEOUT_PATH 2>/dev/null || echo $WAITFORIT_TIMEOUT_PATH)
+    if [[ $WAITFORIT_TIMEOUT_PATH =~ "busybox" ]]; then
+        WAITFORIT_ISBUSY=1
+        echoerr "$WAITFORIT_cmdname: detected busybox timeout"
+    fi
 fi
+# WAITFORIT_BUSYTIMEFLAG is removed, logic moved to the call site in wait_for_wrapper
 
 if [[ $WAITFORIT_CHILD -gt 0 ]]; then
     wait_for

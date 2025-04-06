@@ -1,6 +1,9 @@
 import 'reflect-metadata';
 import express from 'express';
 import cors from 'cors';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDefinition from './config/swagger.config';
 import { AppDataSource } from './config/data-source';
 import { errorHandler } from './middleware/error.middleware';
 import authRoutes from './routes/auth.routes';
@@ -19,7 +22,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Swagger setup
+const options = {
+  swaggerDefinition,
+  // Path is relative to the root directory where the script is run
+  apis: ['./src/routes/*.ts'],
+};
+const swaggerSpec = swaggerJsdoc(options);
+
 // Routes will be added here
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/projects', projectRoutes);

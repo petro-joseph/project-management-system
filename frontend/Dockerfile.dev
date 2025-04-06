@@ -1,12 +1,22 @@
-FROM node:18-alpine
+# Development Dockerfile for Frontend
+FROM node:18.19.0-alpine
 
 WORKDIR /usr/src/app
 
+# Install all dependencies (including dev)
 COPY package*.json ./
-RUN npm install --legacy-peer-deps
+# Install dependencies with verbose logging
+RUN npm install --legacy-peer-deps --loglevel verbose
+# Create non-root user and group before changing ownership
+RUN addgroup -S devgroup && adduser -S devuser -G devgroup
+# Change ownership to devuser before switching user
 
 COPY . .
 
+# Create non-root user for safer dev environment
+# (already created above)
+
 EXPOSE 3000
 
+# Start Vite dev server
 CMD ["npm", "run", "dev", "--", "--port", "3000"]

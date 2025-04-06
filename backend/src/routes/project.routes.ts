@@ -50,58 +50,7 @@ router.post(
   projectController.createProject as RequestHandler
 );
 
-/**
- * @swagger
- * /projects:
- *   get:
- *     summary: Get all projects
- *     description: Retrieve a list of all projects
- *     security:
- *       - bearerAuth: []
- *     tags:
- *       - Projects
- *     responses:
- *       200:
- *         description: A list of projects
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Project'
- *       401:
- *         description: Unauthorized
- */
 router.get('/', projectController.getAllProjects as RequestHandler);
-/**
- * @swagger
- * /projects/{id}:
- *   get:
- *     summary: Get a project by ID
- *     description: Retrieve a single project by its ID
- *     security:
- *       - bearerAuth: []
- *     tags:
- *       - Projects
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: The project ID
- *     responses:
- *       200:
- *         description: Project details
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Project'
- *       401:
- *         description: Unauthorized
- *       404:
- *         description: Project not found
- */
 router.get('/:id', projectController.getProjectById as RequestHandler);
 
 /**
@@ -149,33 +98,7 @@ router.put(
   projectController.updateProject as RequestHandler
 );
 
-/**
- * @swagger
- * /projects/{id}:
- *   delete:
- *     summary: Delete a project
- *     description: Delete an existing project (Admin and Manager only)
- *     security:
- *       - bearerAuth: []
- *     tags:
- *       - Projects
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: The project ID
- *     responses:
- *       204:
- *         description: Project deleted successfully
- *       401:
- *         description: Unauthorized
- *       403:
- *         description: Forbidden
- *       404:
- *         description: Project not found
- */
+
 router.delete(
   '/:id',
   authorize([UserRole.ADMIN, UserRole.MANAGER]),

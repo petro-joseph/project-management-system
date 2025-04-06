@@ -1,19 +1,35 @@
-FROM node:18-alpine
+# ----------- Builder Stage -----------
+FROM node:18.19.0-alpine AS builder
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Install dependencies including dev tools
+# Install all dependencies (including devDependencies)
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
-# Install ts-node globally (optional, if not in package.json)
-RUN npm install -g ts-node
-
-# Copy application code
+# Copy source code
 COPY . .
 
-# Expose the port from docker-compose.yml
+# Build TypeScript into dist/
+RUN npm run build
+
+# ----------- Production Stage -----------
+FROM node:18.19.0-alpine AS production
+
+WORKDIR /app
+
+# Copy only package.json files to install production deps
+COPY package*.json ./
+RUN npm ci --only=production
+
+# Copy built application from builder
+COPY --from=builder /app/dist ./dist
+
+# Use a non-root user for security
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+
 EXPOSE 3001
 
-# Start the app
-CMD ["npm", "start"]
+# Start the compiled app
+CMD ["node", "dist/server.js"]
