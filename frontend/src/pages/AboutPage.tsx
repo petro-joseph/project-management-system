@@ -11,9 +11,9 @@ const AboutPage: React.FC = () => {
       <header className="w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-10">
         <div className="container flex h-16 items-center justify-between px-4">
           <Link to="/" className="flex items-center">
-            <span className="font-medium text-lg text-primary">Nova ERP</span>
+            <span className="font-medium text-lg text-primary">Project Managment System</span>
           </Link>
-          
+
           <nav className="hidden md:flex items-center space-x-8">
             <Link to="/about" className="text-sm font-medium text-primary transition-colors">About</Link>
             <Link to="/features" className="text-sm font-medium hover:text-primary transition-colors">Features</Link>
@@ -34,7 +34,7 @@ const AboutPage: React.FC = () => {
       {/* Hero Section */}
       <section className="pt-20 pb-16 bg-gradient-to-b from-background to-secondary/20">
         <div className="container px-4 md:px-6 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">About Nova ERP</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">About Project Managment System</h1>
           <p className="text-xl text-muted-foreground max-w-[800px] mx-auto">
             We're on a mission to simplify business operations through intuitive, powerful software solutions.
           </p>
@@ -49,7 +49,7 @@ const AboutPage: React.FC = () => {
               <h2 className="text-3xl font-bold mb-6">Our Story</h2>
               <div className="space-y-4 text-lg">
                 <p>
-                  Nova ERP was founded in 2018 by a team of business operations experts and software engineers who were frustrated with the complexity of existing enterprise solutions.
+                  Project Managment System was founded in 2018 by a team of business operations experts and software engineers who were frustrated with the complexity of existing enterprise solutions.
                 </p>
                 <p>
                   We set out to create a comprehensive yet intuitive platform that would empower businesses of all sizes to streamline their operations without requiring extensive training or IT support.
@@ -60,10 +60,10 @@ const AboutPage: React.FC = () => {
               </div>
             </div>
             <div className="relative rounded-lg overflow-hidden border border-border shadow-lg">
-              <img 
-                src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=1600" 
-                alt="Nova ERP team" 
-                className="w-full h-full object-cover aspect-video" 
+              <img
+                src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=1600"
+                alt="Project Managment System team"
+                className="w-full h-full object-cover aspect-video"
               />
             </div>
           </div>
@@ -76,7 +76,7 @@ const AboutPage: React.FC = () => {
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Our Mission & Values</h2>
             <p className="text-lg text-muted-foreground max-w-[700px] mx-auto">
-              The principles that drive everything we do at Nova ERP
+              The principles that drive everything we do at Project Managment System
             </p>
           </div>
 
@@ -113,7 +113,7 @@ const AboutPage: React.FC = () => {
                 icon: Building,
               }
             ].map((value, index) => (
-              <div 
+              <div
                 key={index}
                 className="flex flex-col p-6 bg-background rounded-lg border border-border shadow-sm"
               >
@@ -134,7 +134,7 @@ const AboutPage: React.FC = () => {
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Meet Our Leadership</h2>
             <p className="text-lg text-muted-foreground max-w-[700px] mx-auto">
-              The team behind Nova ERP's vision and execution
+              The team behind Project Managment System's vision and execution
             </p>
           </div>
 
@@ -159,14 +159,14 @@ const AboutPage: React.FC = () => {
                 image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=800"
               },
             ].map((person, index) => (
-              <div 
+              <div
                 key={index}
                 className="flex flex-col text-center p-6 bg-background rounded-lg border border-border shadow-sm"
               >
                 <div className="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full">
-                  <img 
-                    src={person.image} 
-                    alt={person.name} 
+                  <img
+                    src={person.image}
+                    alt={person.name}
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -185,7 +185,7 @@ const AboutPage: React.FC = () => {
           <div className="max-w-[800px] mx-auto text-primary-foreground">
             <h2 className="text-3xl font-bold tracking-tight mb-4">Join Our Journey</h2>
             <p className="text-lg mb-8 opacity-90">
-              Become part of the Nova ERP story and transform how your business operates.
+              Become part of the Project Managment System story and transform how your business operates.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/login">
@@ -242,7 +242,7 @@ const AboutPage: React.FC = () => {
             </div>
           </div>
           <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between text-sm">
-            <p className="text-muted-foreground">© 2023 Nova ERP. All rights reserved.</p>
+            <p className="text-muted-foreground">© 2023 Project Managment System. All rights reserved.</p>
             <div className="flex items-center gap-4 mt-4 md:mt-0">
               <Link to="#" className="text-muted-foreground hover:text-foreground">
                 Privacy Policy

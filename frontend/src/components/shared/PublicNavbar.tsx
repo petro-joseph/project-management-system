@@ -19,19 +19,19 @@ const PublicNavbar: React.FC = () => {
     <header className="w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-10">
       <div className="container flex h-16 items-center justify-between px-4">
         <Link to="/" className="flex items-center z-20">
-          <span className="font-medium text-lg text-primary">Nova ERP</span>
+          <span className="font-medium text-lg text-primary">Project Managment System</span>
         </Link>
-        
+
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
           {navItems.map((item) => (
-            <Link 
+            <Link
               key={item.name}
-              to={item.path} 
+              to={item.path}
               className={cn(
                 "text-sm font-medium transition-colors",
-                location.pathname === item.path 
-                  ? "text-primary" 
+                location.pathname === item.path
+                  ? "text-primary"
                   : "text-foreground hover:text-primary"
               )}
             >
@@ -51,9 +51,9 @@ const PublicNavbar: React.FC = () => {
         </div>
 
         {/* Mobile Menu Button */}
-        <Button 
-          variant="ghost" 
-          size="icon" 
+        <Button
+          variant="ghost"
+          size="icon"
           className="md:hidden z-20"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
@@ -70,13 +70,13 @@ const PublicNavbar: React.FC = () => {
           <div className="fixed inset-0 bg-background z-10 md:hidden flex flex-col pt-20 px-4">
             <nav className="flex flex-col gap-4">
               {navItems.map((item) => (
-                <Link 
+                <Link
                   key={item.name}
-                  to={item.path} 
+                  to={item.path}
                   className={cn(
                     "text-lg font-medium py-2 transition-colors",
-                    location.pathname === item.path 
-                      ? "text-primary" 
+                    location.pathname === item.path
+                      ? "text-primary"
                       : "text-foreground hover:text-primary"
                   )}
                   onClick={() => setIsMenuOpen(false)}

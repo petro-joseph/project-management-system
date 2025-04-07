@@ -3,13 +3,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/context/ThemeContext';
-import { 
-  Sun, 
-  Moon, 
-  Check, 
-  ArrowRight, 
-  BarChart3, 
-  Briefcase, 
+import {
+  Sun,
+  Moon,
+  Check,
+  ArrowRight,
+  BarChart3,
+  Briefcase,
   FileText,
   DollarSign,
   Clock,
@@ -25,11 +25,11 @@ const LandingPage = () => {
     <div className="min-h-screen bg-background">
       {/* Navigation */}
       <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
-        <div className="text-2xl font-bold text-primary">Nova ERP</div>
+        <div className="text-2xl font-bold text-primary">Project Managment System</div>
         <div className="flex items-center space-x-4">
-          <Button 
-            variant="ghost" 
-            size="icon" 
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             className="text-foreground"
             aria-label="Toggle theme"
@@ -84,16 +84,16 @@ const LandingPage = () => {
               </div>
             </div>
             <div className="flex-1 rounded-xl overflow-hidden shadow-2xl border border-border">
-              <img 
-                src="https://images.unsplash.com/photo-1531297484001-80022131f5a1" 
-                alt="Dashboard Screenshot" 
+              <img
+                src="https://images.unsplash.com/photo-1531297484001-80022131f5a1"
+                alt="Dashboard Screenshot"
                 className="w-full h-auto object-cover"
               />
             </div>
           </div>
         </div>
       </section>
-      
+
       {/* Features Section */}
       <section className="py-20 bg-muted/50">
         <div className="container mx-auto px-4">
@@ -106,39 +106,39 @@ const LandingPage = () => {
               Powerful tools designed to help your business grow and operate efficiently
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <FeatureCard 
+            <FeatureCard
               icon={<BarChart3 className="h-10 w-10 text-primary" />}
               title="Project Management"
               description="Track projects from start to finish with intuitive dashboards and reporting tools."
             />
-            
-            <FeatureCard 
+
+            <FeatureCard
               icon={<Briefcase className="h-10 w-10 text-primary" />}
               title="Asset Management"
               description="Keep track of your fixed assets throughout their entire lifecycle."
             />
-            
-            <FeatureCard 
+
+            <FeatureCard
               icon={<FileText className="h-10 w-10 text-primary" />}
               title="Inventory Control"
               description="Manage stock levels, track items, and optimize your inventory processes."
             />
-            
-            <FeatureCard 
+
+            <FeatureCard
               icon={<DollarSign className="h-10 w-10 text-primary" />}
               title="Financial Management"
               description="Comprehensive tools for budgeting, expense tracking, and financial reporting."
             />
-            
-            <FeatureCard 
+
+            <FeatureCard
               icon={<Clock className="h-10 w-10 text-primary" />}
               title="Time Tracking"
               description="Monitor productivity and billable hours with detailed time tracking features."
             />
-            
-            <FeatureCard 
+
+            <FeatureCard
               icon={<Globe className="h-10 w-10 text-primary" />}
               title="Multi-location Support"
               description="Manage operations across multiple locations with centralized control."
@@ -146,7 +146,7 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-      
+
       {/* Testimonials Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
@@ -156,24 +156,24 @@ const LandingPage = () => {
             </Badge>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Trusted by Businesses Worldwide</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              See what our customers have to say about their experience with Nova ERP
+              See what our customers have to say about their experience with Project Managment System
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <TestimonialCard 
-              quote="Nova ERP revolutionized how we manage our inventory and assets. It's been a game-changer for our operations."
+            <TestimonialCard
+              quote="Project Managment System revolutionized how we manage our inventory and assets. It's been a game-changer for our operations."
               author="Sarah Johnson"
               company="Tech Solutions Inc."
             />
-            
-            <TestimonialCard 
+
+            <TestimonialCard
               quote="The project management tools have helped us deliver projects on time and within budget consistently."
               author="Michael Chen"
               company="Global Innovations"
             />
-            
-            <TestimonialCard 
+
+            <TestimonialCard
               quote="Easy to use, comprehensive, and the support team is incredible. Couldn't ask for a better ERP solution."
               author="Emily Williams"
               company="Retail Ventures"
@@ -181,13 +181,13 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-      
+
       {/* CTA Section */}
       <section className="py-20 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Your Business?</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-            Join thousands of businesses that trust Nova ERP to streamline their operations
+            Join thousands of businesses that trust Project Managment System to streamline their operations
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/login">
@@ -209,12 +209,12 @@ const LandingPage = () => {
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-lg font-bold mb-4">Nova ERP</h3>
+              <h3 className="text-lg font-bold mb-4">Project Managment System</h3>
               <p className="text-muted-foreground">
                 Comprehensive business management solution for modern enterprises.
               </p>
             </div>
-            
+
             <div>
               <h3 className="text-lg font-bold mb-4">Product</h3>
               <ul className="space-y-2">
@@ -223,7 +223,7 @@ const LandingPage = () => {
                 <li><Link to="/about" className="text-muted-foreground hover:text-foreground">About</Link></li>
               </ul>
             </div>
-            
+
             <div>
               <h3 className="text-lg font-bold mb-4">Resources</h3>
               <ul className="space-y-2">
@@ -232,7 +232,7 @@ const LandingPage = () => {
                 <li><a href="#" className="text-muted-foreground hover:text-foreground">Support</a></li>
               </ul>
             </div>
-            
+
             <div>
               <h3 className="text-lg font-bold mb-4">Contact</h3>
               <ul className="space-y-2">
@@ -241,10 +241,10 @@ const LandingPage = () => {
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-border mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm text-muted-foreground">
-              © 2023 Nova ERP. All rights reserved.
+              © 2023 Project Managment System. All rights reserved.
             </div>
             <div className="flex space-x-4 mt-4 md:mt-0">
               <Link to="/privacy" className="text-sm text-muted-foreground hover:text-foreground">
@@ -262,7 +262,7 @@ const LandingPage = () => {
 };
 
 // Feature Card Component
-const FeatureCard = ({ icon, title, description }: { 
+const FeatureCard = ({ icon, title, description }: {
   icon: React.ReactNode;
   title: string;
   description: string;

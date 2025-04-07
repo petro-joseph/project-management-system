@@ -1,4 +1,4 @@
-import { IsString, IsInt, IsOptional, IsNumber, IsDateString } from 'class-validator';
+import { IsString, IsInt, IsOptional, IsNumber, IsDateString, IsUUID } from 'class-validator';
 
 export class CreateInventoryItemDto {
   @IsString()
@@ -15,20 +15,20 @@ export class CreateInventoryItemDto {
   unitOfMeasure!: string;
 
   @IsOptional()
-  @IsInt()
-  locationId?: number;
+  @IsUUID()
+  locationId?: string;
 
   @IsOptional()
-  @IsInt()
-  projectId?: number;
+  @IsUUID()
+  projectId?: string;
 
   @IsOptional()
   @IsDateString()
   purchaseDate?: string;
 
   @IsOptional()
-  @IsInt()
-  supplierId?: number;
+  @IsUUID()
+  supplierId?: string;
 
   @IsOptional()
   @IsNumber()
@@ -69,20 +69,20 @@ export class UpdateInventoryItemDto {
   unitOfMeasure?: string;
 
   @IsOptional()
-  @IsInt()
-  locationId?: number;
+  @IsUUID()
+  locationId?: string;
 
   @IsOptional()
-  @IsInt()
-  projectId?: number;
+  @IsUUID()
+  projectId?: string;
 
   @IsOptional()
   @IsDateString()
   purchaseDate?: string;
 
   @IsOptional()
-  @IsInt()
-  supplierId?: number;
+  @IsUUID()
+  supplierId?: string;
 
   @IsOptional()
   @IsNumber()

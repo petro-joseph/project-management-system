@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 import { Menu, Moon, Sun } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuLabel, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/context/AuthContext';
 import { useTheme } from "@/context/ThemeContext";
@@ -35,15 +35,15 @@ const Header: React.FC<HeaderProps> = ({ sidebarOpen, toggleSidebar }) => {
           </Button>
 
           <Link to="/" className="flex items-center">
-            <span className="font-medium text-lg text-primary">Nova ERP</span>
+            <span className="font-medium text-lg text-primary">Project Managment System</span>
           </Link>
         </div>
 
         <div className="flex items-center space-x-4">
           {/* Theme Toggle */}
-          <Button 
-            variant="ghost" 
-            size="icon" 
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             aria-label="Toggle theme"
             className="text-foreground"

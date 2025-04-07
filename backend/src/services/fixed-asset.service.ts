@@ -43,6 +43,12 @@ export class FixedAssetService {
 
   // FixedAsset CRUD
   async createAsset(data: CreateFixedAssetDto) {
+    const category = await this.categoryRepo.findOneBy({ id: data.categoryId });
+    if (!category) {
+      const { BadRequestError } = await import('../errors/bad-request-error');
+      throw new BadRequestError(`Category with id ${data.categoryId} does not exist`);
+    }
+
     const asset = this.assetRepo.create(data);
     return this.assetRepo.save(asset);
   }

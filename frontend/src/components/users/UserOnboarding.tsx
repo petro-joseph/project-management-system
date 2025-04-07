@@ -1,10 +1,10 @@
 
 import React, { useState } from 'react';
 import { Role, OnboardingResource } from '@/lib/types';
-import { 
-  BookOpen, 
-  Video, 
-  FileText, 
+import {
+  BookOpen,
+  Video,
+  FileText,
   CheckCircle2,
   Play,
   BookOpenCheck,
@@ -35,7 +35,7 @@ import { toast } from 'sonner';
 const mockOnboardingResources: OnboardingResource[] = [
   {
     id: 1,
-    title: 'Getting Started with Nova ERP',
+    title: 'Getting Started with Project Managment System',
     description: 'An introduction to the basic features and navigation of the system.',
     type: 'video',
     content: 'https://example.com/videos/getting-started.mp4',
@@ -109,20 +109,20 @@ const UserOnboarding: React.FC<UserOnboardingProps> = ({ userRole }) => {
   const [selectedResource, setSelectedResource] = useState<OnboardingResource | null>(null);
   const [resourceDialogOpen, setResourceDialogOpen] = useState(false);
   const [completedResources, setCompletedResources] = useState<number[]>(mockCompletedResources);
-  
+
   // Filter resources based on user role
-  const relevantResources = mockOnboardingResources.filter(resource => 
+  const relevantResources = mockOnboardingResources.filter(resource =>
     resource.requiredForRoles.includes(userRole)
   );
-  
+
   // Calculate onboarding progress
-  const onboardingProgress = 
-    relevantResources.length > 0 
-      ? Math.round((completedResources.filter(id => 
-          relevantResources.some(resource => resource.id === id)
-        ).length / relevantResources.length) * 100) 
+  const onboardingProgress =
+    relevantResources.length > 0
+      ? Math.round((completedResources.filter(id =>
+        relevantResources.some(resource => resource.id === id)
+      ).length / relevantResources.length) * 100)
       : 0;
-  
+
   // Get resource icon based on type
   const getResourceIcon = (type: string) => {
     switch (type) {
@@ -138,7 +138,7 @@ const UserOnboarding: React.FC<UserOnboardingProps> = ({ userRole }) => {
         return <BookOpen className="h-5 w-5 text-gray-500" />;
     }
   };
-  
+
   // Mark resource as completed
   const markAsCompleted = (resourceId: number) => {
     if (!completedResources.includes(resourceId)) {
@@ -147,7 +147,7 @@ const UserOnboarding: React.FC<UserOnboardingProps> = ({ userRole }) => {
     }
     setResourceDialogOpen(false);
   };
-  
+
   // View resource details
   const viewResource = (resource: OnboardingResource) => {
     setSelectedResource(resource);
@@ -165,7 +165,7 @@ const UserOnboarding: React.FC<UserOnboardingProps> = ({ userRole }) => {
                 Resources to help you get the most out of the system
               </CardDescription>
             </div>
-            
+
             <div className="flex items-center gap-3">
               <div className="flex flex-col">
                 <span className="text-xs text-muted-foreground">Progress</span>
@@ -181,13 +181,13 @@ const UserOnboarding: React.FC<UserOnboardingProps> = ({ userRole }) => {
               <GraduationCap className="h-5 w-5 mr-2 text-primary" />
               <h3 className="text-lg font-medium">Your Learning Path</h3>
             </div>
-            
+
             <div className="flex items-center p-4 bg-secondary/50 rounded-md mb-6">
               <BookOpenCheck className="h-8 w-8 text-primary mr-3" />
               <div>
                 <h4 className="font-medium">Complete Your Onboarding</h4>
                 <p className="text-sm text-muted-foreground mt-1">
-                  You have completed {completedResources.filter(id => 
+                  You have completed {completedResources.filter(id =>
                     relevantResources.some(resource => resource.id === id)
                   ).length} of {relevantResources.length} required resources
                 </p>
@@ -195,14 +195,14 @@ const UserOnboarding: React.FC<UserOnboardingProps> = ({ userRole }) => {
               </div>
             </div>
           </div>
-          
+
           <ScrollArea className="h-[400px] pr-4">
             <div className="space-y-4">
               {relevantResources.map(resource => {
                 const isCompleted = completedResources.includes(resource.id);
-                
+
                 return (
-                  <div 
+                  <div
                     key={resource.id}
                     className={`p-4 border rounded-md transition-all hover:border-primary hover:shadow-sm ${isCompleted ? 'bg-secondary/30' : ''}`}
                   >
@@ -223,8 +223,8 @@ const UserOnboarding: React.FC<UserOnboardingProps> = ({ userRole }) => {
                         <p className="text-sm text-muted-foreground mt-1">{resource.description}</p>
                         <div className="flex items-center justify-between mt-4">
                           <Badge variant="outline" className="capitalize">{resource.type}</Badge>
-                          <Button 
-                            variant={isCompleted ? "outline" : "default"} 
+                          <Button
+                            variant={isCompleted ? "outline" : "default"}
                             size="sm"
                             className="h-8 gap-1"
                             onClick={() => viewResource(resource)}
@@ -241,7 +241,7 @@ const UserOnboarding: React.FC<UserOnboardingProps> = ({ userRole }) => {
           </ScrollArea>
         </CardContent>
       </Card>
-      
+
       <Dialog open={resourceDialogOpen} onOpenChange={setResourceDialogOpen}>
         {selectedResource && (
           <DialogContent className="sm:max-w-[600px]">
@@ -254,7 +254,7 @@ const UserOnboarding: React.FC<UserOnboardingProps> = ({ userRole }) => {
                 {selectedResource.description}
               </DialogDescription>
             </DialogHeader>
-            
+
             <div className="py-4">
               <div className="p-6 border rounded-md bg-secondary/30 flex flex-col items-center justify-center min-h-[200px] mb-4">
                 {selectedResource.type === 'video' && (
@@ -270,7 +270,7 @@ const UserOnboarding: React.FC<UserOnboardingProps> = ({ userRole }) => {
                     </Button>
                   </div>
                 )}
-                
+
                 {selectedResource.type === 'article' && (
                   <div className="text-center">
                     <FileText className="h-12 w-12 text-muted-foreground mb-3" />
@@ -284,7 +284,7 @@ const UserOnboarding: React.FC<UserOnboardingProps> = ({ userRole }) => {
                     </Button>
                   </div>
                 )}
-                
+
                 {selectedResource.type === 'quiz' && (
                   <div className="text-center">
                     <BookOpen className="h-12 w-12 text-muted-foreground mb-3" />
@@ -298,7 +298,7 @@ const UserOnboarding: React.FC<UserOnboardingProps> = ({ userRole }) => {
                     </Button>
                   </div>
                 )}
-                
+
                 {selectedResource.type === 'interactive' && (
                   <div className="text-center">
                     <Sparkles className="h-12 w-12 text-muted-foreground mb-3" />
@@ -313,16 +313,16 @@ const UserOnboarding: React.FC<UserOnboardingProps> = ({ userRole }) => {
                   </div>
                 )}
               </div>
-              
+
               <div className="flex justify-end">
-                <Button 
+                <Button
                   onClick={() => markAsCompleted(selectedResource.id)}
                   className="gap-2"
                   disabled={completedResources.includes(selectedResource.id)}
                 >
                   <CheckCircle2 className="h-4 w-4" />
-                  {completedResources.includes(selectedResource.id) 
-                    ? 'Already Completed' 
+                  {completedResources.includes(selectedResource.id)
+                    ? 'Already Completed'
                     : 'Mark as Completed'}
                 </Button>
               </div>

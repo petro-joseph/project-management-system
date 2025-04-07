@@ -61,7 +61,7 @@ const LoginPage: React.FC = () => {
         <Card className="w-full glass-card animate-fade-in">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold text-center">
-              <span className="text-gradient">Nova ERP</span>
+              <span className="text-gradient">Project Managment System</span>
             </CardTitle>
             <CardDescription className="text-center">
               Enter your credentials to sign in to your account
@@ -74,7 +74,7 @@ const LoginPage: React.FC = () => {
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
-            
+
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
@@ -84,9 +84,9 @@ const LoginPage: React.FC = () => {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input 
-                          placeholder="Enter your email" 
-                          {...field} 
+                        <Input
+                          placeholder="Enter your email"
+                          {...field}
                           disabled={isLoading}
                         />
                       </FormControl>
@@ -94,7 +94,7 @@ const LoginPage: React.FC = () => {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField
                   control={form.control}
                   name="password"
@@ -102,10 +102,10 @@ const LoginPage: React.FC = () => {
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input 
-                          type="password" 
-                          placeholder="Enter your password" 
-                          {...field} 
+                        <Input
+                          type="password"
+                          placeholder="Enter your password"
+                          {...field}
                           disabled={isLoading}
                         />
                       </FormControl>
@@ -113,10 +113,10 @@ const LoginPage: React.FC = () => {
                     </FormItem>
                   )}
                 />
-                
-                <Button 
-                  type="submit" 
-                  className="w-full" 
+
+                <Button
+                  type="submit"
+                  className="w-full"
                   disabled={isLoading}
                 >
                   {isLoading ? (
@@ -137,7 +137,7 @@ const LoginPage: React.FC = () => {
               <span className="text-xs text-muted-foreground">Demo Accounts</span>
               <div className="h-px flex-1 bg-border"></div>
             </div>
-            
+
             <div className="grid grid-cols-3 gap-2 w-full">
               {demoCredentials.map((cred) => (
                 <Button

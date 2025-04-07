@@ -13,9 +13,9 @@ const PricingPage: React.FC = () => {
       <header className="w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-10">
         <div className="container flex h-16 items-center justify-between px-4">
           <Link to="/" className="flex items-center">
-            <span className="font-medium text-lg text-primary">Nova ERP</span>
+            <span className="font-medium text-lg text-primary">Project Managment System</span>
           </Link>
-          
+
           <nav className="hidden md:flex items-center space-x-8">
             <Link to="/about" className="text-sm font-medium hover:text-primary transition-colors">About</Link>
             <Link to="/features" className="text-sm font-medium hover:text-primary transition-colors">Features</Link>
@@ -53,7 +53,7 @@ const PricingPage: React.FC = () => {
                 <TabsTrigger value="annually">Annually (Save 20%)</TabsTrigger>
               </TabsList>
             </div>
-            
+
             <TabsContent value="monthly" className="p-0">
               <div className="grid gap-8 md:grid-cols-3">
                 {/* Starter Plan */}
@@ -197,7 +197,7 @@ const PricingPage: React.FC = () => {
                 </Card>
               </div>
             </TabsContent>
-            
+
             <TabsContent value="annually" className="p-0">
               <div className="grid gap-8 md:grid-cols-3">
                 {/* Starter Plan Annual */}
@@ -378,7 +378,7 @@ const PricingPage: React.FC = () => {
               },
               {
                 question: "Can I get a refund if I'm not satisfied?",
-                answer: "We offer a 30-day money-back guarantee for all plans. If you're not completely satisfied with Nova ERP, contact our support team within 30 days of your purchase for a full refund."
+                answer: "We offer a 30-day money-back guarantee for all plans. If you're not completely satisfied with Project Managment System, contact our support team within 30 days of your purchase for a full refund."
               },
               {
                 question: "Do I need to commit to a long-term contract?",
@@ -400,7 +400,7 @@ const PricingPage: React.FC = () => {
           <div className="max-w-[800px] mx-auto text-primary-foreground">
             <h2 className="text-3xl font-bold tracking-tight mb-4">Ready to Get Started?</h2>
             <p className="text-lg mb-8 opacity-90">
-              Try Nova ERP free for 14 days. No credit card required.
+              Try Project Managment System free for 14 days. No credit card required.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/login">
@@ -457,7 +457,7 @@ const PricingPage: React.FC = () => {
             </div>
           </div>
           <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between text-sm">
-            <p className="text-muted-foreground">© 2023 Nova ERP. All rights reserved.</p>
+            <p className="text-muted-foreground">© 2023 Project Managment System. All rights reserved.</p>
             <div className="flex items-center gap-4 mt-4 md:mt-0">
               <Link to="#" className="text-muted-foreground hover:text-foreground">
                 Privacy Policy

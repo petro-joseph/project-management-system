@@ -13,9 +13,9 @@ const FeaturesPage: React.FC = () => {
       <header className="w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-10">
         <div className="container flex h-16 items-center justify-between px-4">
           <Link to="/" className="flex items-center">
-            <span className="font-medium text-lg text-primary">Nova ERP</span>
+            <span className="font-medium text-lg text-primary">Project Managment System</span>
           </Link>
-          
+
           <nav className="hidden md:flex items-center space-x-8">
             <Link to="/about" className="text-sm font-medium hover:text-primary transition-colors">About</Link>
             <Link to="/features" className="text-sm font-medium text-primary transition-colors">Features</Link>
@@ -53,7 +53,7 @@ const FeaturesPage: React.FC = () => {
               <TabsTrigger value="inventory">Inventory</TabsTrigger>
               <TabsTrigger value="users">User Management</TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="projects" className="p-0">
               <div className="grid gap-8 md:grid-cols-2 items-center">
                 <div>
@@ -83,15 +83,15 @@ const FeaturesPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="relative rounded-lg overflow-hidden border border-border shadow-lg">
-                  <img 
-                    src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&q=80&w=1600" 
-                    alt="Project Management" 
-                    className="w-full h-full object-cover aspect-video" 
+                  <img
+                    src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&q=80&w=1600"
+                    alt="Project Management"
+                    className="w-full h-full object-cover aspect-video"
                   />
                 </div>
               </div>
             </TabsContent>
-            
+
             <TabsContent value="tasks" className="p-0">
               <div className="grid gap-8 md:grid-cols-2 items-center">
                 <div>
@@ -121,15 +121,15 @@ const FeaturesPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="relative rounded-lg overflow-hidden border border-border shadow-lg">
-                  <img 
-                    src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=1600" 
-                    alt="Task Management" 
-                    className="w-full h-full object-cover aspect-video" 
+                  <img
+                    src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=1600"
+                    alt="Task Management"
+                    className="w-full h-full object-cover aspect-video"
                   />
                 </div>
               </div>
             </TabsContent>
-            
+
             <TabsContent value="inventory" className="p-0">
               <div className="grid gap-8 md:grid-cols-2 items-center">
                 <div>
@@ -159,15 +159,15 @@ const FeaturesPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="relative rounded-lg overflow-hidden border border-border shadow-lg">
-                  <img 
-                    src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&q=80&w=1600" 
-                    alt="Inventory Management" 
-                    className="w-full h-full object-cover aspect-video" 
+                  <img
+                    src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&q=80&w=1600"
+                    alt="Inventory Management"
+                    className="w-full h-full object-cover aspect-video"
                   />
                 </div>
               </div>
             </TabsContent>
-            
+
             <TabsContent value="users" className="p-0">
               <div className="grid gap-8 md:grid-cols-2 items-center">
                 <div>
@@ -197,10 +197,10 @@ const FeaturesPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="relative rounded-lg overflow-hidden border border-border shadow-lg">
-                  <img 
-                    src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=1600" 
-                    alt="User Management" 
-                    className="w-full h-full object-cover aspect-video" 
+                  <img
+                    src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=1600"
+                    alt="User Management"
+                    className="w-full h-full object-cover aspect-video"
                   />
                 </div>
               </div>
@@ -215,7 +215,7 @@ const FeaturesPage: React.FC = () => {
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">All Features</h2>
             <p className="text-lg text-muted-foreground max-w-[700px] mx-auto">
-              Nova ERP is packed with features to help you run your business more efficiently
+              Project Managment System is packed with features to help you run your business more efficiently
             </p>
           </div>
 
@@ -263,7 +263,7 @@ const FeaturesPage: React.FC = () => {
               },
               {
                 title: "Customization Options",
-                description: "Configure Nova ERP to match your business needs",
+                description: "Configure Project Managment System to match your business needs",
                 icon: Settings,
               },
             ].map((feature, index) => (
@@ -285,7 +285,7 @@ const FeaturesPage: React.FC = () => {
           <div className="max-w-[800px] mx-auto text-primary-foreground">
             <h2 className="text-3xl font-bold tracking-tight mb-4">Ready to Experience All Features?</h2>
             <p className="text-lg mb-8 opacity-90">
-              Start your free trial today and discover how Nova ERP can transform your business operations.
+              Start your free trial today and discover how Project Managment System can transform your business operations.
             </p>
             <Link to="/login">
               <Button variant="secondary" size="lg" className="gap-2">
@@ -335,7 +335,7 @@ const FeaturesPage: React.FC = () => {
             </div>
           </div>
           <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between text-sm">
-            <p className="text-muted-foreground">© 2023 Nova ERP. All rights reserved.</p>
+            <p className="text-muted-foreground">© 2023 Project Managment System. All rights reserved.</p>
             <div className="flex items-center gap-4 mt-4 md:mt-0">
               <Link to="#" className="text-muted-foreground hover:text-foreground">
                 Privacy Policy
