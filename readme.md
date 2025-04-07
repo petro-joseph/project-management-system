@@ -62,16 +62,16 @@ This project management system is engineered to optimize task and project workfl
 ## 📸 Screenshots
 
 Visuals of:
-1. Dashboard
+**1. Dashboard**
 ![Dashboard Screenshot](./screenshots/image-1.png)
 
-2. Project Management
+**2. Project Management**
 ![Project Management Screenshot](./screenshots/image-2.png)
 
-3. Task Tracking
+**3. Task Tracking**
 ![Task Tracking Screenshot](./screenshots/image-3.png)
 
-4. Dark Mode UI
+**4. Dark Mode UI**
 ![Dark Mode UI Screenshot](./screenshots/image-4.png)
 
 ---
@@ -206,6 +206,7 @@ They correspond to your computer's private IP addresses on different network int
 **Customizing port and host:**
 
 - Default port is **3000** .
+
 - You can change this in `frontend/vite.config.ts`, `.env` files, or by CLI flags:
 
 ```bash
@@ -218,17 +219,21 @@ Setting `host` to `0.0.0.0` exposes the server on all network interfaces, enabli
 
 ## 🌐 Service Endpoints
 
-| Service                | URL                                | Credentials (if applicable)       |
-|------------------------|------------------------------------|-----------------------------------|
-| Frontend              | [http://localhost:3000](http://localhost:3000) | -                                 |
-| Backend API           | [http://localhost:3001](http://localhost:3001) | -                                 |
-| Swagger Docs          | [http://localhost:3001/api/docs](http://localhost:3001/api/docs) | -                                 |
-| PostgreSQL            | `localhost:5433`                  | User: `postgres`, Pass: `postgres` |
-| Mailhog (Email)       | [http://localhost:8025](http://localhost:8025) | -                                 |
-| Adminer (DB GUI)      | [http://localhost:8081](http://localhost:8081) | -                                 |
-| NGINX Proxy           | [http://localhost:8080](http://localhost:8080) | -                                 |
-| Grafana               | [http://localhost/grafana](http://localhost/grafana) | User: `admin`, Pass: `admin`      |
-| Prometheus            | [http://localhost/prometheus](http://localhost/prometheus) | -                                 |
+**⚠️ Important:**
+- **Nginx**, **Mailhog**, **Adminer**, **Grafana**  and **Prometheus**  are only available when using **docker**
+- When using the Nginx reverse proxy, **all traffic are automatically redirected to HTTPS** using **self-signed SSL certificates** generated at container startup. This will likely trigger a **browser security warning** about an untrusted certificate. You will need to **accept the risk / proceed anyway** to access the application securely during development.
+
+
+| Service          | Direct Access URL                          | Nginx Reverse Proxy URL (HTTPS)                   | Credentials / Notes                        |
+|------------------|--------------------------------------------|--------------------------------------------------|------------------------------------------|
+| Frontend UI      | [http://localhost:3000](http://localhost:3000)         | [https://localhost:8443/](https://localhost:8443/)             | -                                        |
+| Backend API      | [http://localhost:3001](http://localhost:3001)         | [https://localhost:8443/api/](https://localhost:8443/api/)     | -                                        |
+| Swagger Docs     | [http://localhost:3001/api/docs](http://localhost:3001/api/docs) | [https://localhost:8443/api/docs](https://localhost:8443/api/docs) | -                                        |
+| PostgreSQL DB    | `localhost:5432`                                    | N/A                                              | User: `postgres`, Pass: `postgres`       |
+| Mailhog (Email)  | [http://localhost:8025](http://localhost:8025)     | [https://localhost:8443/mailhog/](https://localhost:8443/mailhog/) | -                                        |
+| Adminer (DB GUI) | [http://localhost:8080](http://localhost:8080)     | [https://localhost:8443/adminer/](https://localhost:8443/adminer/) | -                                        |
+| Grafana          | [http://localhost:3002](http://localhost:3002)     | [https://localhost:8443/grafana/](https://localhost:8443/grafana/) | User: `admin`, Pass: `admin`             |
+| Prometheus       | [http://localhost:9090](http://localhost:9090)     | [https://localhost:8443/prometheus/](https://localhost:8443/prometheus/) | -                                        |
 
 ---
 

@@ -28,7 +28,8 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
-    # Removed ports: "3001:3001" - Access via Nginx
+    ports:
+      - "3001:3001"  # Expose backend API directly for dev/testing
     environment:
       - NODE_ENV=${NODE_ENV}
       - DB_HOST=postgres
@@ -51,13 +52,14 @@ services:
     volumes:
       - ./backend:/usr/src/app
       - /usr/src/app/node_modules
-      command: ["sh", "./scripts/docker-entrypoint.sh"]
+    command: ["sh", "./scripts/docker-entrypoint.sh"]
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
-    # Removed ports: "3000:3000" - Access via Nginx
+    ports:
+      - "3000:3000"  # Expose frontend dev server directly for dev/testing
     environment:
       - NODE_ENV=${NODE_ENV}
     networks:
@@ -69,10 +71,10 @@ services:
       - backend
 
   grafana:
-    # Pin Grafana version
-    image: grafana/grafana:10.2.3
+    image: grafana/grafana:latest
     container_name: grafana
-    # Removed ports: "3002:3000" - Access via Nginx
+    ports:
+      - "3002:3000" 
     volumes:
       - ./grafana/provisioning/datasources/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
       - ./grafana/provisioning/dashboards/dashboard.yml:/etc/grafana/provisioning/dashboards/dashboard.yml
@@ -88,26 +90,25 @@ services:
       - app-network
 
   prometheus:
-    # Pin Prometheus version
-    image: prom/prometheus:v2.48.1
+    image: prom/prometheus:latest
     container_name: prometheus
-    # Removed ports: "9090:9090" - Access via Nginx
+    ports:
+      - "9090:9090"  # Prometheus UI
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
       - app-network
 
   node-exporter:
-    # Pin Node Exporter version
-    image: prom/node-exporter:v1.7.0
+    image: prom/node-exporter:latest
     container_name: node-exporter
-    # Removed ports: "9100:9100" - Access via Nginx
     networks:
       - app-network
 
   postgres:
-    # Pin Postgres version
-    image: postgres:15-alpine
+    image: postgres:latest
+    ports:
+      - "5432:5432"  # Postgres database
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -118,18 +119,18 @@ services:
       - app-network
 
   mailhog:
-    image: mailhog/mailhog
+    image: mailhog/mailhog:latest
     ports:
-      - "1025:1025"  # Keep SMTP port internal
-      - "8025:8025"  # Keep MailHog UI accessible
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # MailHog UI
     networks:
       - app-network
 
   adminer:
-    # Pin Adminer version
-    image: adminer:4.8.1
+    image: adminer:latest
     container_name: adminer
-    # Removed ports: "8080:8080" - Access via Nginx
+    ports:
+      - "8080:8080"  # Adminer UI
     environment:
       - ADMINER_DEFAULT_SERVER=postgres
     depends_on:
@@ -138,18 +139,15 @@ services:
       - app-network
 
   redis:
-    # Pin Redis version
-    image: redis:7-alpine
+    image: redis:latest
     volumes:
       - redis_data:/data
     networks:
       - app-network
 
   redis-exporter:
-    # Pin Redis Exporter version
-    image: oliver006/redis_exporter:v1.55.0
+    image: oliver006/redis_exporter:latest
     container_name: redis-exporter
-    # Removed ports: "9121:9121" - Access via Nginx
     networks:
       - app-network
     environment:
