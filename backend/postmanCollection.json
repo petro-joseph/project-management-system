@@ -3,85 +3,53 @@
     "name": "Project Management API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:3001" },
+    { "key": "user_token", "value": "" },
+    { "key": "admin_token", "value": "" },
+    { "key": "manager_token", "value": "" },
+    { "key": "user_id", "value": "" },
+    { "key": "project_id", "value": "" },
+    { "key": "task_id", "value": "" },
+    { "key": "inventory_id", "value": "" },
+    { "key": "asset_id", "value": "" },
+    { "key": "category_id", "value": "" },
+    { "key": "query", "value": "" }
+  ],
   "item": [
     {
-      "name": "🔐 Authentication",
+      "name": "🔐 Auth",
       "item": [
         {
-          "name": "Register User",
+          "name": "Register",
           "request": {
             "method": "POST",
-            "header": [],
+            "url": "{{base_url}}/api/register",
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\",\n    \"role\": \"user\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/api/auth/register",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "register"
-              ]
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}",
+              "options": { "raw": { "language": "json" } }
             }
           }
         },
         {
-          "name": "Login User",
+          "name": "Login",
           "request": {
             "method": "POST",
-            "header": [],
+            "url": "{{base_url}}/api/login",
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/api/auth/login",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "login"
-              ]
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}",
+              "options": { "raw": { "language": "json" } }
             }
           }
         },
         {
-          "name": "Logout User",
+          "name": "Logout",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{user_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/auth/logout",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "logout"
-              ]
-            }
+            "url": "{{base_url}}/api/logout",
+            "header": [{ "key": "Authorization", "value": "Bearer {{user_token}}" }]
           }
         }
       ]
@@ -90,176 +58,65 @@
       "name": "👥 Users",
       "item": [
         {
-          "name": "Create User (Admin)",
+          "name": "Create User",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{admin_token}}"
-              }
-            ],
+            "url": "{{base_url}}/api/users",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"New User\",\n    \"email\": \"newuser@example.com\",\n    \"password\": \"password123\",\n    \"role\": \"user\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/api/users",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "users"
-              ]
+              "raw": "{\n  \"name\": \"Jane\",\n  \"email\": \"jane@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"user\"\n}",
+              "options": { "raw": { "language": "json" } }
             }
           }
         },
         {
-          "name": "Get All Users (Admin/Manager)",
+          "name": "Get All Users",
           "request": {
             "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{admin_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/users?page=1&limit=10",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "users"
-              ],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "limit",
-                  "value": "10"
-                }
-              ]
-            }
+            "url": "{{base_url}}/api/users",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }]
           }
         },
         {
-          "name": "Get Single User",
+          "name": "Get User by ID",
           "request": {
             "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{user_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/users/{{user_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "users",
-                "{{user_id}}"
-              ]
-            }
+            "url": "{{base_url}}/api/users/{{user_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }]
           }
         },
         {
-          "name": "Update User (Admin)",
+          "name": "Update User",
           "request": {
             "method": "PUT",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{admin_token}}"
-              }
-            ],
+            "url": "{{base_url}}/api/users/{{user_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"Updated Name\",\n    \"email\": \"updated@example.com\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/api/users/{{user_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "users",
-                "{{user_id}}"
-              ]
+              "raw": "{\n  \"name\": \"Jane Updated\",\n  \"email\": \"jane.updated@example.com\"\n}",
+              "options": { "raw": { "language": "json" } }
             }
           }
         },
         {
-          "name": "Delete User (Admin)",
+          "name": "Delete User",
           "request": {
             "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{admin_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/users/{{user_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "users",
-                "{{user_id}}"
-              ]
-            }
+            "url": "{{base_url}}/api/users/{{user_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }]
           }
         },
         {
-          "name": "Assign Role (Admin)",
+          "name": "Assign Role",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{admin_token}}"
-              }
-            ],
+            "url": "{{base_url}}/api/users/{{user_id}}/role",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"role\": \"manager\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/api/users/{{user_id}}/role",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "users",
-                "{{user_id}}",
-                "role"
-              ]
+              "raw": "{\n  \"role\": \"manager\"\n}",
+              "options": { "raw": { "language": "json" } }
             }
           }
         }
@@ -269,33 +126,15 @@
       "name": "📁 Projects",
       "item": [
         {
-          "name": "Create Project (Manager/Admin)",
+          "name": "Create Project",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{manager_token}}"
-              }
-            ],
+            "url": "{{base_url}}/api/projects",
+            "header": [{ "key": "Authorization", "value": "Bearer {{manager_token}}" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"New Project\",\n    \"description\": \"Project description\",\n    \"managerId\": \"{{manager_id}}\",\n    \"start_date\": \"2025-01-01T00:00:00.000Z\",\n    \"end_date\": \"2025-12-31T00:00:00.000Z\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/api/projects",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "projects"
-              ]
+              "raw": "{\n  \"name\": \"New Project\",\n  \"description\": \"Description\",\n  \"start_date\": \"2025-01-01T00:00:00Z\",\n  \"end_date\": \"2025-12-31T00:00:00Z\"\n}",
+              "options": { "raw": { "language": "json" } }
             }
           }
         },
@@ -303,100 +142,37 @@
           "name": "Get All Projects",
           "request": {
             "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{user_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/projects",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "projects"
-              ]
-            }
+            "url": "{{base_url}}/api/projects",
+            "header": [{ "key": "Authorization", "value": "Bearer {{user_token}}" }]
           }
         },
         {
-          "name": "Get Single Project",
+          "name": "Get Project by ID",
           "request": {
             "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{user_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/projects/{{project_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "projects",
-                "{{project_id}}"
-              ]
-            }
+            "url": "{{base_url}}/api/projects/{{project_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{user_token}}" }]
           }
         },
         {
-          "name": "Update Project (Manager/Admin)",
+          "name": "Update Project",
           "request": {
             "method": "PUT",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{manager_token}}"
-              }
-            ],
+            "url": "{{base_url}}/api/projects/{{project_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{manager_token}}" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"Updated Project Name\",\n    \"description\": \"Updated description\",\n    \"managerId\": \"{{manager_id}}\", \n    \"start_date\": \"2023-01-01T00:00:00.000Z\",\n    \"end_date\": \"2023-12-31T00:00:00.000Z\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/api/projects/{{project_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "projects",
-                "{{project_id}}"
-              ]
+              "raw": "{\n  \"name\": \"Updated Project\",\n  \"description\": \"Updated description\",\n  \"start_date\": \"2025-01-01T00:00:00Z\",\n  \"end_date\": \"2025-12-31T00:00:00Z\"\n}",
+              "options": { "raw": { "language": "json" } }
             }
           }
         },
         {
-          "name": "Delete Project (Manager/Admin)",
+          "name": "Delete Project",
           "request": {
             "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{manager_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/projects/{{project_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "projects",
-                "{{project_id}}"
-              ]
-            }
+            "url": "{{base_url}}/api/projects/{{project_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{manager_token}}" }]
           }
         }
       ]
@@ -408,145 +184,202 @@
           "name": "Create Task",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{manager_token}}"
-              }
-            ],
+            "url": "{{base_url}}/api/tasks",
+            "header": [{ "key": "Authorization", "value": "Bearer {{manager_token}}" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"New Task\",\n    \"description\": \"Task description\",\n    \"assigneeId\": \"{{user_id}}\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/api/projects/{{project_id}}/tasks",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "projects",
-                "{{project_id}}",
-                "tasks"
-              ]
+              "raw": "{\n  \"name\": \"New Task\",\n  \"description\": \"Description\",\n  \"projectId\": \"{{project_id}}\",\n  \"assigneeId\": \"{{user_id}}\",\n  \"status\": \"pending\"\n}",
+              "options": { "raw": { "language": "json" } }
             }
           }
         },
         {
-          "name": "Get Project Tasks",
+          "name": "Get All Tasks",
           "request": {
             "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{user_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/projects/{{project_id}}/tasks",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "projects",
-                "{{project_id}}",
-                "tasks"
-              ]
-            }
+            "url": "{{base_url}}/api/tasks",
+            "header": [{ "key": "Authorization", "value": "Bearer {{user_token}}" }]
+          }
+        },
+        {
+          "name": "Get Task by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/tasks/{{task_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{user_token}}" }]
           }
         },
         {
           "name": "Update Task",
           "request": {
             "method": "PUT",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{user_token}}"
-              }
-            ],
+            "url": "{{base_url}}/api/tasks/{{task_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{manager_token}}" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"Updated Task Name\",\n    \"description\": \"Updated description\",\n    \"assigneeId\": \"{{user_id}}\",\n    \"status\": \"in_progress\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/api/tasks/{{task_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "tasks",
-                "{{task_id}}"
-              ]
+              "raw": "{\n  \"name\": \"Updated Task\",\n  \"description\": \"Updated description\",\n  \"projectId\": \"{{project_id}}\",\n  \"assigneeId\": \"{{user_id}}\",\n  \"status\": \"in_progress\"\n}",
+              "options": { "raw": { "language": "json" } }
             }
           }
         },
         {
-          "name": "Update Task Status",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{user_token}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"status\": \"completed\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/api/tasks/{{task_id}}/status",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "tasks",
-                "{{task_id}}",
-                "status"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Delete Task (Manager/Admin)",
+          "name": "Delete Task",
           "request": {
             "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{manager_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/tasks/{{task_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "tasks",
-                "{{task_id}}"
-              ]
+            "url": "{{base_url}}/api/tasks/{{task_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{manager_token}}" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "📦 Inventory",
+      "item": [
+        {
+          "name": "Create Inventory Item",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/inventory",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Item Name\",\n  \"quantity\": 10,\n  \"unitOfMeasure\": \"pcs\"\n}",
+              "options": { "raw": { "language": "json" } }
             }
+          }
+        },
+        {
+          "name": "Get All Inventory Items",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/inventory",
+            "header": [{ "key": "Authorization", "value": "Bearer {{user_token}}" }]
+          }
+        },
+        {
+          "name": "Get Inventory Item by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/inventory/{{inventory_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{user_token}}" }]
+          }
+        },
+        {
+          "name": "Update Inventory Item",
+          "request": {
+            "method": "PUT",
+            "url": "{{base_url}}/api/inventory/{{inventory_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Item\",\n  \"quantity\": 20,\n  \"unitOfMeasure\": \"pcs\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Delete Inventory Item",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/api/inventory/{{inventory_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏢 Fixed Assets",
+      "item": [
+        {
+          "name": "Create Asset Category",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/asset-categories",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Category Name\",\n  \"defaultUsefulLifeMin\": 3,\n  \"defaultUsefulLifeMax\": 5,\n  \"defaultDepreciationMethod\": \"straight_line\",\n  \"defaultSalvageValuePercent\": 10\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Get All Asset Categories",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/asset-categories",
+            "header": [{ "key": "Authorization", "value": "Bearer {{user_token}}" }]
+          }
+        },
+        {
+          "name": "Update Asset Category",
+          "request": {
+            "method": "PUT",
+            "url": "{{base_url}}/api/asset-categories/{{category_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Category\",\n  \"defaultUsefulLifeMin\": 4,\n  \"defaultUsefulLifeMax\": 6,\n  \"defaultDepreciationMethod\": \"declining_balance\",\n  \"defaultSalvageValuePercent\": 15\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Delete Asset Category",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/api/asset-categories/{{category_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }]
+          }
+        },
+        {
+          "name": "Create Fixed Asset",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/fixed-assets",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assetTag\": \"A123\",\n  \"name\": \"Laptop\",\n  \"categoryId\": 1,\n  \"acquisitionDate\": \"2025-01-01T00:00:00Z\",\n  \"originalCost\": 1500,\n  \"usefulLife\": 5,\n  \"depreciationMethod\": \"straight_line\",\n  \"salvageValue\": 100,\n  \"currentValue\": 1500,\n  \"accumulatedDepreciation\": 0\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Get All Fixed Assets",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/fixed-assets",
+            "header": [{ "key": "Authorization", "value": "Bearer {{user_token}}" }]
+          }
+        },
+        {
+          "name": "Get Fixed Asset by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/fixed-assets/{{asset_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{user_token}}" }]
+          }
+        },
+        {
+          "name": "Update Fixed Asset",
+          "request": {
+            "method": "PUT",
+            "url": "{{base_url}}/api/fixed-assets/{{asset_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Laptop\",\n  \"originalCost\": 1400\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Delete Fixed Asset",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/api/fixed-assets/{{asset_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }]
           }
         }
       ]
@@ -558,46 +391,16 @@
           "name": "Get Dashboard Stats",
           "request": {
             "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{admin_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/dashboard/stats",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "dashboard",
-                "stats"
-              ]
-            }
+            "url": "{{base_url}}/api/dashboard/stats",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }]
           }
         },
         {
-          "name": "Get Project Progress",
+          "name": "Get Dashboard Progress",
           "request": {
             "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{admin_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/dashboard/progress",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "dashboard",
-                "progress"
-              ]
-            }
+            "url": "{{base_url}}/api/dashboard/progress",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }]
           }
         }
       ]
@@ -609,115 +412,61 @@
           "name": "Search Tasks",
           "request": {
             "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{user_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/search/tasks?q={{query}}&page=1&limit=10",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "search",
-                "tasks"
-              ],
-              "query": [
-                {
-                  "key": "q",
-                  "value": "{{query}}"
-                },
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "limit",
-                  "value": "10"
-                }
-              ]
-            }
+            "url": "{{base_url}}/api/search/tasks?query={{query}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{user_token}}" }]
           }
         },
         {
           "name": "Search Projects",
           "request": {
             "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{user_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/search/projects?q={{query}}&page=1&limit=10",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "search",
-                "projects"
-              ],
-              "query": [
-                {
-                  "key": "q",
-                  "value": "{{query}}"
-                },
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "limit",
-                  "value": "10"
-                }
-              ]
-            }
+            "url": "{{base_url}}/api/search/projects?query={{query}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{user_token}}" }]
+          }
+        },
+        {
+          "name": "Search Users",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/search/users?query={{query}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{user_token}}" }]
           }
         }
       ]
-    }
-  ],
-  "variable": [
-    {
-      "key": "base_url",
-      "value": "http://localhost:3000"
     },
     {
-      "key": "manager_token",
-      "value": ""
-    },
-    {
-      "key": "admin_token",
-      "value": ""
-    },
-    {
-      "key": "user_token",
-      "value": ""
-    },
-    {
-      "key": "project_id",
-      "value": ""
-    },
-    {
-      "key": "task_id",
-      "value": ""
-    },
-    {
-      "key": "user_id",
-      "value": ""
-    },
-    {
-      "key": "manager_id",
-      "value": ""
-    },
-    {
-      "key": "query",
-      "value": ""
+      "name": "📋 Activities",
+      "item": [
+        {
+          "name": "Log Activity",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/activities",
+            "header": [{ "key": "Authorization", "value": "Bearer {{user_token}}" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{user_id}}\",\n  \"action\": \"login\",\n  \"details\": \"User logged in\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Get Recent Activities",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/activities/recent",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }]
+          }
+        },
+        {
+          "name": "Get User Activities",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/activities/user/{{user_id}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{user_token}}" }]
+          }
+        }
+      ]
     }
   ]
 }

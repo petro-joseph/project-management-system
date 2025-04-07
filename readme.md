@@ -148,7 +148,7 @@ The easiest way to run the system with all dependencies pre-configured.
 4. **Access the System**:
    - Frontend: [http://localhost:3000](http://localhost:3000)
    - API: [http://localhost:3001](http://localhost:3001)
-   - Swagger Docs: [http://localhost:3001/api-docs](http://localhost:3001/api-docs)
+   - Swagger Docs: [http://localhost:3001/api/docs](http://localhost:3001/api/docs)
 
 5. **View Logs** (optional):
    ```bash
@@ -192,6 +192,28 @@ For a hands-on approach without Docker.
    npm run build && npm start  # Production mode
    ```
 
+### ℹ️ Frontend Development Server Details
+
+When running the frontend locally with `npm run dev` (inside the `frontend` directory), the Vite development server starts and serves the React app with hot module replacement.
+
+- **Local URL:** [http://localhost:3000](http://localhost:3000) — open this on your development machine.
+- **Network URLs:** e.g., `http://192.168.x.x:3000` or `http://172.x.x.x:3000` — these allow other devices on your local network (phone, tablet, other PCs) to access the app.
+
+**What do these network IPs mean?**
+
+They correspond to your computer's private IP addresses on different network interfaces (Wi-Fi, Ethernet, Docker, VPN, etc.). They are only accessible within your local network.
+
+**Customizing port and host:**
+
+- Default port is **3000** .
+- You can change this in `frontend/vite.config.ts`, `.env` files, or by CLI flags:
+
+```bash
+npm run dev -- --port=3000 --host=0.0.0.0
+```
+
+Setting `host` to `0.0.0.0` exposes the server on all network interfaces, enabling access from other devices.
+
 ---
 
 ## 🌐 Service Endpoints
@@ -200,7 +222,7 @@ For a hands-on approach without Docker.
 |------------------------|------------------------------------|-----------------------------------|
 | Frontend              | [http://localhost:3000](http://localhost:3000) | -                                 |
 | Backend API           | [http://localhost:3001](http://localhost:3001) | -                                 |
-| Swagger Docs          | [http://localhost:3001/api-docs](http://localhost:3001/api-docs) | -                                 |
+| Swagger Docs          | [http://localhost:3001/api/docs](http://localhost:3001/api/docs) | -                                 |
 | PostgreSQL            | `localhost:5433`                  | User: `postgres`, Pass: `postgres` |
 | Mailhog (Email)       | [http://localhost:8025](http://localhost:8025) | -                                 |
 | Adminer (DB GUI)      | [http://localhost:8081](http://localhost:8081) | -                                 |
@@ -381,7 +403,7 @@ npm run test:coverage     # Test coverage report
 
 ## 📑 API Documentation
 
-- **Swagger UI**: [http://localhost:3001/api-docs](http://localhost:3001/api-docs)
+- **Swagger UI**: [http://localhost:3001/api/docs](http://localhost:3001/api/docs)
 - **Postman Collection**: Download [here](./backend/postmanCollection.json) for pre-built requests and examples.
 
 ---
