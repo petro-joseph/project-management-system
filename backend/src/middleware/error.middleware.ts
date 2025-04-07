@@ -44,6 +44,20 @@ export const errorHandler = (
     });
   }
 
+  // Handle invalid JSON syntax errors from body-parser
+  if (
+    err instanceof SyntaxError &&
+    'statusCode' in err &&
+    (err as any).statusCode === 400 &&
+    'type' in err &&
+    (err as any).type === 'entity.parse.failed'
+  ) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Invalid JSON payload. Please check your request body syntax.'
+    });
+  }
+
   // Log error for debugging
   console.error('Unhandled error:', err);
 

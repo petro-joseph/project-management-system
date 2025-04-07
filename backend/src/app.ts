@@ -40,7 +40,7 @@ app.use('/api/search', searchRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/activities', activityRoutes);
-app.use('/api/assets', fixedAssetRoutes);
+app.use('/api', fixedAssetRoutes);
 
 // Error handling middleware should be last
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {

@@ -1,3 +1,4 @@
+import { QueryFailedError } from 'typeorm';
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { FixedAssetService } from '../services/fixed-asset.service';
 
@@ -36,11 +37,16 @@ export class FixedAssetController {
   };
 
   // Fixed Assets
-  createAsset: RequestHandler = async (req, res, next) => {
+  createAsset = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const result = await this.service.createAsset(req.body);
       res.status(201).json(result);
-    } catch (err) { next(err); }
+    } catch (err) {
+      if (err instanceof QueryFailedError && err.driverError?.code === '23503') {
+        return res.status(400).json({ message: 'Invalid foreign key: referenced category or related entity does not exist.' });
+      }
+      next(err);
+    }
   };
 
   getAllAssets: RequestHandler = async (req, res, next) => {

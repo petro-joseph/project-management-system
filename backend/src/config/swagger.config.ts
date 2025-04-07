@@ -8,7 +8,7 @@ const swaggerDefinition: SwaggerDefinition = {
     description: 'API documentation for the Project Management System',
     contact: {
       name: 'API Support',
-      email: 'support@projectmanagement.com'
+      email: 'josephalley67@gmail.com'
     }
   },
   servers: [
@@ -307,6 +307,49 @@ Object.assign(swaggerDefinition.paths, {
     }
   },
 
+
+  // DASHBOARD
+
+  '/dashboard/stats': {
+    get: {
+      tags: ['Dashboard'],
+      summary: 'Get dashboard statistics',
+      responses: {
+        '200': {
+          description: 'Dashboard statistics data',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object'
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  '/dashboard/progress': {
+    get: {
+      tags: ['Dashboard'],
+      summary: 'Get dashboard progress data',
+      responses: {
+        '200': {
+          description: 'Dashboard progress data',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object'
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+
+
   // SEARCH
   '/search/tasks': {
     get: {
@@ -409,7 +452,7 @@ Object.assign(swaggerDefinition.paths, {
     }
   },
 
-  
+
   // PROJECTS
   '/projects': {
     get: {
@@ -1228,7 +1271,7 @@ Object.assign(swaggerDefinition.paths, {
       }
     }
   },
-  '/users/{userId}/activities': {
+  '/activities/user/{userId}': {
     get: {
       tags: ['Activities'],
       summary: 'Get activities for user',
@@ -1262,6 +1305,7 @@ Object.assign(swaggerDefinition.paths, {
       }
     }
   },
+
 
 });
 

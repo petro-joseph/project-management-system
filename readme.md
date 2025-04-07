@@ -142,8 +142,8 @@ The easiest way to run the system with all dependencies pre-configured.
 3. **Launch Services**:
    ```bash
    docker-compose up -d
-   docker-compose exec api npm run migration:run
    ```
+   The backend container will automatically run database migrations on startup.
 
 4. **Access the System**:
    - Frontend: [http://localhost:3000](http://localhost:3000)
@@ -183,6 +183,7 @@ For a hands-on approach without Docker.
    ```bash
    npm run migration:run
    ```
+   This command will create or update all database tables based on the latest migrations.
 
 6. **Start the Application**:
    ```bash
