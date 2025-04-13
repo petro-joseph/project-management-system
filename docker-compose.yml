@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   nginx:
@@ -48,11 +47,13 @@ services:
       - postgres
       - mailhog
     networks:
-      - app-network
+      app-network:
+        aliases:
+          - backend
     volumes:
       - ./backend:/usr/src/app
       - /usr/src/app/node_modules
-    command: ["sh", "./scripts/docker-entrypoint.sh"]
+    command: ["npx", "ts-node", "src/server.ts"]
 
   frontend:
     build:
@@ -62,6 +63,7 @@ services:
       - "3000:3000"  # Expose frontend dev server directly for dev/testing
     environment:
       - NODE_ENV=${NODE_ENV}
+      - VITE_BASE_PATH=/frontend/
     networks:
       - app-network
     volumes:
@@ -108,7 +110,7 @@ services:
   postgres:
     image: postgres:latest
     ports:
-      - "5432:5432"  # Postgres database
+      - "5433:5432"  # Postgres database (host port 5433 to avoid conflict)
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres

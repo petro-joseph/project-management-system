@@ -2,8 +2,8 @@
 FROM nginx:1.25.3-alpine
 
 # Install necessary packages and copy scripts/config
-RUN apk update && \
-    apk add --no-cache bash curl openssl && \
+RUN apk update --no-cache --no-progress --repository http://dl-cdn.alpinelinux.org/alpine/v3.18/main/ --repository http://dl-cdn.alpinelinux.org/alpine/v3.18/community/ --allow-untrusted && \
+    apk add --no-cache --no-progress --repository http://dl-cdn.alpinelinux.org/alpine/v3.18/main/ --repository http://dl-cdn.alpinelinux.org/alpine/v3.18/community/ --allow-untrusted bash curl openssl && \
     rm -rf /var/cache/apk/*
 
 # Copy SSL generation and wait scripts, plus nginx config
