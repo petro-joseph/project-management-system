@@ -63,7 +63,7 @@ services:
       - "3000:3000"  # Expose frontend dev server directly for dev/testing
     environment:
       - NODE_ENV=${NODE_ENV}
-      - VITE_BASE_PATH=/frontend/
+      # - VITE_BASE_PATH=/frontend/ # Removed: Serve from root for direct access
     networks:
       - app-network
     volumes:
@@ -84,8 +84,8 @@ services:
       - grafana-storage:/var/lib/grafana
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_SERVER_ROOT_URL=https://localhost:8443/grafana/
-      - GF_SERVER_SERVE_FROM_SUB_PATH=true  # Enable subpath support
+      - GF_SERVER_ROOT_URL=http://localhost:3002/ # Set for direct access
+      - GF_SERVER_SERVE_FROM_SUB_PATH=false # Disable subpath for direct access
     depends_on:
       - prometheus
     networks:

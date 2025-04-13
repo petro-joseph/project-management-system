@@ -226,7 +226,7 @@ Setting `host` to `0.0.0.0` exposes the server on all network interfaces, enabli
 
 | Service          | Direct Access URL                          | Nginx Reverse Proxy URL (HTTPS)                   | Credentials / Notes                        |
 |------------------|--------------------------------------------|--------------------------------------------------|------------------------------------------|
-| Frontend UI      | [http://localhost:3000](http://localhost:3000)         | [https://localhost:8443/](https://localhost:8443/)             | -                                        |
+| Frontend UI      | [http://localhost:3000](http://localhost:3000)         | [https://localhost:8443/frontend](https://localhost:8443/frontend)             | -                                        |
 | Backend API      | [http://localhost:3001](http://localhost:3001)         | [https://localhost:8443/api/](https://localhost:8443/api/)     | -                                        |
 | Swagger Docs     | [http://localhost:3001/api/docs](http://localhost:3001/api/docs) | [https://localhost:8443/api/docs](https://localhost:8443/api/docs) | -                                        |
 | PostgreSQL DB    | `localhost:5432`                                    | N/A                                              | User: `postgres`, Pass: `postgres`       |
