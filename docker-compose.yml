@@ -63,7 +63,7 @@ services:
       - "3000:3000"  # Expose frontend dev server directly for dev/testing
     environment:
       - NODE_ENV=${NODE_ENV}
-      # - VITE_BASE_PATH=/frontend/ # Removed: Serve from root for direct access
+      # - VITE_BASE_PATH=/frontend/ # Removed: Let Nginx handle subpath
     networks:
       - app-network
     volumes:

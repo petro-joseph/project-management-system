@@ -146,9 +146,12 @@ The easiest way to run the system with all dependencies pre-configured.
    The backend container will automatically run database migrations on startup.
 
 4. **Access the System**:
-   - Frontend: [http://localhost:3000](http://localhost:3000)
-   - API: [http://localhost:3001](http://localhost:3001)
-   - Swagger Docs: [http://localhost:3001/api/docs](http://localhost:3001/api/docs)
+   - **Frontend (Reverse Proxy):** [https://localhost:8443/frontend/](https://localhost:8443/frontend/) (Recommended)
+   - **Frontend (Direct):** [http://localhost:3000](http://localhost:3000) (For development/debugging)
+   - **API (Reverse Proxy):** [https://localhost:8443/api/](https://localhost:8443/api/)
+   - **Swagger Docs (Reverse Proxy):** [https://localhost:8443/api/docs/](https://localhost:8443/api/docs/)
+   - **API (Direct):** [http://localhost:3001](http://localhost:3001)
+   - **Swagger Docs (Direct):** [http://localhost:3001/api/docs/](http://localhost:3001/api/docs/)
 
 5. **View Logs** (optional):
    ```bash
@@ -220,21 +223,20 @@ Setting `host` to `0.0.0.0` exposes the server on all network interfaces, enabli
 ## 🌐 Service Endpoints
 
 **⚠️ Important:**
-- **Nginx**, **Mailhog**, **Adminer**, **Grafana**  and **Prometheus**  are only available when using **docker**
-- When using the Nginx reverse proxy, **all traffic are automatically redirected to HTTPS** using **self-signed SSL certificates** generated at container startup. This will likely trigger a **browser security warning** about an untrusted certificate. You will need to **accept the risk / proceed anyway** to access the application securely during development.
+- **Nginx** is only available when using **docker**. Other services like Mailhog, Adminer, Grafana, and Prometheus can be accessed directly via their exposed ports if needed (see `docker-compose.yml`).
+- When using the Nginx reverse proxy, **all traffic is automatically redirected to HTTPS** using **self-signed SSL certificates** generated at container startup. This will likely trigger a **browser security warning** about an untrusted certificate. You will need to **accept the risk / proceed anyway** to access the application securely during development.
 
 
 | Service          | Direct Access URL                          | Nginx Reverse Proxy URL (HTTPS)                   | Credentials / Notes                        |
 |------------------|--------------------------------------------|--------------------------------------------------|------------------------------------------|
-| Frontend UI      | [http://localhost:3000](http://localhost:3000)         | [https://localhost:8443/frontend](https://localhost:8443/frontend)             | -                                        |
+| Frontend UI      | [http://localhost:3000](http://localhost:3000)         | [https://localhost:8443/frontend/](https://localhost:8443/frontend/)           | Note: Direct access serves from root (`/`), Proxy serves under `/frontend/`. |
 | Backend API      | [http://localhost:3001](http://localhost:3001)         | [https://localhost:8443/api/](https://localhost:8443/api/)     | -                                        |
 | Swagger Docs     | [http://localhost:3001/api/docs](http://localhost:3001/api/docs) | [https://localhost:8443/api/docs](https://localhost:8443/api/docs) | -                                        |
-| PostgreSQL DB    | `localhost:5432`                                    | N/A                                              | User: `postgres`, Pass: `postgres`       |
-| Mailhog (Email)  | [http://localhost:8025](http://localhost:8025)     | [https://localhost:8443/mailhog/](https://localhost:8443/mailhog/) | -                                        |
-| Adminer (DB GUI) | [http://localhost:8080](http://localhost:8080)     | [https://localhost:8443/adminer/](https://localhost:8443/adminer/) | -                                        |
-| Grafana          | [http://localhost:3002](http://localhost:3002)     | [https://localhost:8443/grafana/](https://localhost:8443/grafana/) | User: `admin`, Pass: `admin`             |
-| Prometheus       | [http://localhost:9090](http://localhost:9090)     | [https://localhost:8443/prometheus/](https://localhost:8443/prometheus/) | -                                        |
-
+| PostgreSQL DB    | `localhost:5433` (Direct Access Only)               | N/A                                              | User: `postgres`, Pass: `postgres`       |
+| Mailhog (Email)  | [http://localhost:8025](http://localhost:8025) (Direct Access Only) | N/A                                              | -                                        |
+| Adminer (DB GUI) | [http://localhost:8080](http://localhost:8080) (Direct Access Only) | N/A                                              | -                                        |
+| Grafana          | [http://localhost:3002](http://localhost:3002) (Direct Access Only) | N/A                                              | User: `admin`, Pass: `admin`             |
+| Prometheus       | [http://localhost:9090](http://localhost:9090) (Direct Access Only) | N/A                                              | -                                        |
 ---
 
 ## 🗂 Services Overview
@@ -352,8 +354,8 @@ This section details the services powering the system, their roles, configuratio
 ## 📊 Monitoring
 
 Monitor system health with integrated tools:
-- **Grafana**: [http://localhost/grafana](http://localhost/grafana) (User: `admin`, Pass: `admin`)
-- **Prometheus**: [http://localhost/prometheus](http://localhost/prometheus)
+- **Grafana**: [http://localhost/grafana](http://localhost:3002) (User: `admin`, Pass: `admin`)
+- **Prometheus**: [http://localhost/prometheus](http://localhost:9090)
 
 ### Features
 - **System Monitoring**: CPU, memory, disk, and network metrics
